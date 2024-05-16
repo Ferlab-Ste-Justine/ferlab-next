@@ -1,0 +1,22 @@
+{
+  "compilerOptions": {
+    "sourceMap": true,
+    "declaration": true,
+    "allowSyntheticDefaultImports": true,
+    "incremental": true,
+    "target": "ESNext",
+    "module": "ESNext",
+    "moduleResolution": "node",
+    "outDir": "dist",
+    "baseUrl": "./",
+    "paths": {
+      "lib/*": ["./lib/*"]
+    }
+  },
+  "include": [
+    "lib/**/*.*"
+  ],
+  "exclude": [
+    "test/**/*.test.*"
+  ]
+}
