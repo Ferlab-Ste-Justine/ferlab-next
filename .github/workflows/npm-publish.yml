@@ -27,9 +27,10 @@ jobs:
         with:
           node-version: '18.19.1'
           registry-url: 'https://registry.npmjs.org'
-      - name: Install Dependencies
+      - name: Install dependencies and build
         run: |
-          npm ci
+          npm i
+          npm run build
       - name: Publish to NPM
         run: |
           current_version=next@$(node -p -e "require('./package.json').version")
