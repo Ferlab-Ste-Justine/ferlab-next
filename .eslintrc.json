@@ -4,17 +4,22 @@
     "eslint:recommended",
     "plugin:@typescript-eslint/recommended"
   ],
-  "plugins": ["prettier", "@typescript-eslint"],
+  "plugins": ["prettier", "@typescript-eslint", "simple-import-sort"],
   "parser": "@typescript-eslint/parser",
   "rules": {
     "prettier/prettier": ["error"],
-    "max-len": [
-      "error",
-      {
-        "code": 120,
-        "ignoreComments": true
-      }
-    ],
-    "@typescript-eslint/no-explicit-any": "warn"
-  }
+    "max-len": ["error", { "code": 120, "ignoreComments": true } ],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
+    "simple-import-sort/imports": "error",
+    "simple-import-sort/exports": "error",
+    "no-prototype-builtins": 0
+  },
+  "overrides": [
+    {
+      "files": ["test/**/*"],
+      "env": { "jest": true }
+    }
+  ]
 }

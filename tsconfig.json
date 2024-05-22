@@ -4,19 +4,25 @@
     "declaration": true,
     "allowSyntheticDefaultImports": true,
     "incremental": true,
+    "esModuleInterop": true,
+    "skipLibCheck": true,
+    "allowJs": true,
+    "resolveJsonModule": true,
     "target": "ESNext",
     "module": "ESNext",
-    "moduleResolution": "node",
-    "outDir": "dist",
-    "baseUrl": "./",
+    "moduleResolution": "Node",
+    "outDir": "lib",
+    "baseUrl": ".",
     "paths": {
-      "lib/*": ["./lib/*"]
-    }
+      "#src/*": ["src/*"]
+    },
+    "types": ["node", "jest"],
+    "lib": ["ESNext"]
   },
-  "include": [
-    "lib/**/*.*"
-  ],
-  "exclude": [
-    "test/**/*.test.*"
-  ]
+  "ts-node": {
+    "esm": true,
+    "experimentalSpecifierResolution": "node"
+  },
+  "include": ["src/**/*.*"],
+  "exclude": ["**/*.test.ts"]
 }
