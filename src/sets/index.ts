@@ -1,10 +1,7 @@
-import { Client } from '@opensearch-project/opensearch';
-import { GraphQLSchema } from 'graphql/index';
 import difference from 'lodash/difference';
 import dropRight from 'lodash/dropRight';
 import union from 'lodash/union';
 
-import { maxSetContentSize } from '../config';
 import { addSqonToSetSqon, removeSqonToSetSqon } from '../sqon/manipulateSqon';
 import { resolveSetsInSqon } from '../sqon/resolveSetInSqon';
 import { searchSqon } from '../sqon/searchSqon';
@@ -17,12 +14,6 @@ export const SubActionTypes = {
   RENAME_TAG: 'RENAME_TAG',
   ADD_IDS: 'ADD_IDS',
   REMOVE_IDS: 'REMOVE_IDS',
-};
-
-const ActionTypes = {
-  CREATE: 'CREATE',
-  DELETE: 'DELETE',
-  UPDATE: 'UPDATE',
 };
 
 export const getUserSet = async (
@@ -51,13 +42,14 @@ export const createSet = async (
   userId: string,
   usersApiURL,
   esClient,
-  schema
+  schema,
+  maxSetContentSize: number
 ): Promise<Set> => {
   const { sqon, sort, type, idField, tag } = requestBody;
   const sqonAfterReplace = await resolveSetsInSqon(sqon, userId, accessToken, usersApiURL);
-  const ids = await searchSqon(sqonAfterReplace, type, sort, idField, esClient, schema);
+  const ids = await searchSqon(sqonAfterReplace, type, sort, idField, esClient, schema, maxSetContentSize);
 
-  const truncatedIds = truncateIds(ids);
+  const truncatedIds = truncateIds(ids, maxSetContentSize);
 
   const payload = {
     alias: tag,
@@ -102,7 +94,8 @@ export const updateSetContent = async (
   setId: string,
   esClient,
   schema,
-  usersApiURL
+  usersApiURL: string,
+  maxSetContentSize: number
 ): Promise<Set> => {
   const setToUpdate = await getUserSet(accessToken, userId, setId, usersApiURL);
 
@@ -116,7 +109,8 @@ export const updateSetContent = async (
     setToUpdate.content.sort,
     setToUpdate.content.idField,
     esClient,
-    schema
+    schema,
+    maxSetContentSize
   );
 
   if (setType !== setToUpdate.content.setType) {
@@ -130,7 +124,7 @@ export const updateSetContent = async (
 
   const existingIdsWithNewIds =
     requestBody.subAction === SubActionTypes.ADD_IDS ? union(ids, newSqonIds) : difference(ids, newSqonIds);
-  const truncatedIds = truncateIds(existingIdsWithNewIds);
+  const truncatedIds = truncateIds(existingIdsWithNewIds, maxSetContentSize);
 
   const payload = {
     alias: setToUpdate.alias,
@@ -158,7 +152,7 @@ const mapResultToSet = (output: Output): Set => ({
   ids: output.content.ids,
 });
 
-const truncateIds = (ids: string[]): string[] => {
+const truncateIds = (ids: string[], maxSetContentSize: number): string[] => {
   if (ids.length <= maxSetContentSize) {
     return ids;
   }

@@ -1,12 +1,16 @@
 import { PassThrough } from 'stream';
 
-import { ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS, DOWNLOAD_STREAM_BUFFER_SIZE, MAX_DOWNLOAD_ROWS } from '#src/config';
 import { getEsMapping } from '#src/elasticsearch/utils';
 
 import runQuery from '../../graphql/runQuery';
 import buildQuery from '../buildQuery';
 import { getExtendedFields } from '../mapping/extendMapping';
 import esToSafeJsInt from '../utils/esToSafeJsInt';
+
+/** variables used as default value */
+const DOWNLOAD_STREAM_BUFFER_SIZE = 2000;
+const MAX_DOWNLOAD_ROWS = 10000;
+const ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS = false;
 
 /**
  * @param chunkSize
@@ -27,8 +31,10 @@ const getAllData = async ({ chunkSize = DOWNLOAD_STREAM_BUFFER_SIZE, context, ma
 
   const stream = new PassThrough({ objectMode: true });
 
-  const esSort = sort.map(({ field, order }) => ({ [field]: order }));
-  // .concat({ _id: 'asc' });
+  //todo: check if _id is still present for the concat
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const esSort = sort.map(({ field, order }) => ({ [field]: order })).concat({ _id: 'asc' });
 
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
@@ -52,7 +58,9 @@ const getAllData = async ({ chunkSize = DOWNLOAD_STREAM_BUFFER_SIZE, context, ma
   })
     .then((res) => {
       const data = res.data;
-      const maxHits = ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS ? maxRows || MAX_DOWNLOAD_ROWS : MAX_DOWNLOAD_ROWS;
+      const maxDownloadRows = context.MAX_DOWNLOAD_ROWS || MAX_DOWNLOAD_ROWS;
+      const allowCustomMax = context.ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS || ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS;
+      const maxHits = allowCustomMax ? maxRows || maxDownloadRows : maxDownloadRows;
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
       const hitsCount = data?.[index]?.hits?.total || 0;

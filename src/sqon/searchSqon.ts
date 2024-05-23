@@ -2,7 +2,6 @@ import { Client } from '@opensearch-project/opensearch';
 import { GraphQLSchema } from 'graphql';
 import get from 'lodash/get';
 
-import { maxSetContentSize } from '../config';
 import runQuery from '../graphql/runQuery';
 import { SetSqon, Sort } from '../sets/types';
 
@@ -12,7 +11,8 @@ export const searchSqon = async (
   sort: Sort[],
   idField: string,
   esClient: Client,
-  schema: GraphQLSchema
+  schema: GraphQLSchema,
+  maxSetContentSize: number
 ): Promise<string[]> => {
   const results = await runQuery({
     esClient,
