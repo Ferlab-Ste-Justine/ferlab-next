@@ -2,7 +2,7 @@
   "name": "@ferlab/next",
   "version": "0.0.5",
   "description": "Shared library for our wrappers GraphQL APIs",
-  "main": "lib/index.ts",
+  "main": "src/index.ts",
   "type": "module",
   "engines": {
     "node": "^18.19.1",
