@@ -1,8 +1,8 @@
-import { Client } from '@elastic/elasticsearch';
+import { Client } from '@opensearch-project/opensearch';
 import { graphql, GraphQLSchema } from 'graphql';
 import { ExecutionResult } from 'graphql/execution/execute';
 
-import { SetSqon, Sort } from '#src/types/sets';
+import { SetSqon, Sort } from '#src/sets/types';
 
 interface IrunQuery {
   query: string;

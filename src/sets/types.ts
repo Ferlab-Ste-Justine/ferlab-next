@@ -3,6 +3,11 @@ export type SetSqon = {
   content: any; // Since SQON is generic, it is too complex to define an explicit type for its content.
 };
 
+export type Sort = {
+  field: string;
+  order: string;
+};
+
 export type CreateSetBody = {
   projectId: string;
   type: string;
@@ -23,11 +28,6 @@ export type UpdateSetContentBody = {
   sourceType: string;
   sqon: SetSqon;
   projectId: string;
-};
-
-export type Sort = {
-  field: string;
-  order: string;
 };
 
 export type Set = {

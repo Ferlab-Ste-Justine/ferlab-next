@@ -53,10 +53,9 @@ const getAllData = async ({ chunkSize = DOWNLOAD_STREAM_BUFFER_SIZE, context, ma
     .then((res) => {
       const data = res.data;
       const maxHits = ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS ? maxRows || MAX_DOWNLOAD_ROWS : MAX_DOWNLOAD_ROWS;
-
       // eslint-disable-next-line @typescript-eslint/ban-ts-comment
       // @ts-ignore
-      const hitsCount = data?.[graphqlIndex]?.hits?.total || 0;
+      const hitsCount = data?.[index]?.hits?.total || 0;
       const total = maxHits ? Math.min(hitsCount, maxHits) : hitsCount; // i.e. 'maxHits == 0' => hitCounts
       const steps = Array(Math.ceil(total / chunkSize)).fill(null);
 

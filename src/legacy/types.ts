@@ -1,4 +1,4 @@
-import { Client } from '@elastic/elasticsearch';
+import { Client } from '@opensearch-project/opensearch';
 import { GraphQLResolveInfo } from 'graphql';
 
 export interface IQueryContext {

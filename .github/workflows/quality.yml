@@ -1,5 +1,5 @@
-# .github/workflows/node.js.yml
-name: Node.js CI
+# .github/workflows/quality.yml
+name: Quality CI
 
 on:
   push:
