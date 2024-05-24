@@ -36,15 +36,7 @@ jobs:
           current_version=next@$(node -p -e "require('./package.json').version")
           # exit if tag already exists
           [[ $(git tag -l "$current_version") ]] && exit 0
-          re="(-rc\d+)"
-          nodescript="const reg = /(-rc\d+)/g; const m = '$current_version'.match(reg); m ? m[0] : '';"
-          rc_release=$(node -p -e "$nodescript")
-          if [[ $rc_release ]]; then
-            echo "Publishing RC release $current_version"
-            npm publish --tag rc
-          else
-            echo "Publishing stable release $current_version"
-            npm publish
-          fi
+          echo "Publishing stable release $current_version"
+          npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}

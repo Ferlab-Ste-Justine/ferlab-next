@@ -1,7 +1,6 @@
 import omit from 'lodash/omit';
 
 import {
-  ALL_OP,
   AND_OP,
   ARRAY_CONTENT,
   IN_OP,

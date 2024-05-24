@@ -1,4 +1,4 @@
-import buildQuery from '#src/legacy/buildQuery';
+import buildQuery from 'src/legacy/buildQuery';
 
 test('1.buildQuery ">=" and "<=" nested', () => {
   const nestedFieldNames = [
@@ -19,14 +19,14 @@ test('1.buildQuery ">=" and "<=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'participants.family.family_data.available_data_types',
+                field: 'participants.family.family_data.available_data_types',
                 value: ['submitted aligned reads'],
               },
               op: 'in',
             },
             {
               content: {
-                fieldName: 'participants.samples.anatomical_site',
+                field: 'participants.samples.anatomical_site',
                 value: ['C40.0: Long bones of upper limb, scapula and associated joints'],
               },
               op: 'in',
@@ -121,7 +121,7 @@ test('2.buildQuery single ">="', () => {
           content: [
             {
               content: {
-                fieldName: 'files.foo.name',
+                field: 'files.foo.name',
                 value: 7,
               },
               op: '>=',
@@ -184,21 +184,21 @@ test('3.buildQuery "missing" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.data_category',
+                field: 'files.data_category',
                 value: ['Simple Nucleotide Variation'],
               },
               op: 'in',
             },
             {
               content: {
-                fieldName: 'files.experimental_strategy',
+                field: 'files.experimental_strategy',
                 value: ['WXS'],
               },
               op: 'in',
             },
             {
               content: {
-                fieldName: 'files.analysis.metadata.read_groups.is_paired_end',
+                field: 'files.analysis.metadata.read_groups.is_paired_end',
                 value: ['__missing__'],
               },
               op: 'in',
@@ -282,7 +282,7 @@ test('4.buildQuery "some-not-in" nested', () => {
       input: {
         filters: {
           content: {
-            fieldName: 'files.foo.code',
+            field: 'files.foo.code',
             value: ['01'],
           },
           op: 'some-not-in',
@@ -328,14 +328,14 @@ test('4.buildQuery "some-not-in" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.foo.bar.name',
+                field: 'files.foo.bar.name',
                 value: ['cname'],
               },
               op: 'some-not-in',
             },
             {
               content: {
-                fieldName: 'files.foo.bar.code',
+                field: 'files.foo.bar.code',
                 value: '01',
               },
               op: '=',
@@ -454,7 +454,7 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.data_subtype',
+                field: 'files.data_subtype',
                 value: 'Copy number segmentation',
               },
               op: '=',
@@ -463,14 +463,14 @@ test('5.buildQuery "=" and "!=" nested', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'files.experimental_strategy',
+                    field: 'files.experimental_strategy',
                     value: 'WGS',
                   },
                   op: '=',
                 },
                 {
                   content: {
-                    fieldName: 'project.project_id',
+                    field: 'project.project_id',
                     value: 'TCGA-BRCA',
                   },
                   op: '=',
@@ -531,21 +531,21 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.data_subtype',
+                field: 'files.data_subtype',
                 value: 'Copy number segmentation',
               },
               op: '=',
             },
             {
               content: {
-                fieldName: 'files.experimental_strategy',
+                field: 'files.experimental_strategy',
                 value: 'WGS',
               },
               op: '=',
             },
             {
               content: {
-                fieldName: 'project.project_id',
+                field: 'project.project_id',
                 value: 'TCGA-BRCA',
               },
               op: '=',
@@ -603,7 +603,7 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.access',
+                field: 'files.access',
                 value: 'open',
               },
               op: '=',
@@ -612,14 +612,14 @@ test('5.buildQuery "=" and "!=" nested', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'files.center.code',
+                    field: 'files.center.code',
                     value: '01',
                   },
                   op: '=',
                 },
                 {
                   content: {
-                    fieldName: 'project.primary_site',
+                    field: 'project.primary_site',
                     value: 'Brain',
                   },
                   op: '=',
@@ -666,7 +666,7 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.access',
+                field: 'files.access',
                 value: 'protected',
               },
               op: '!=',
@@ -675,14 +675,14 @@ test('5.buildQuery "=" and "!=" nested', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'files.center.code',
+                    field: 'files.center.code',
                     value: '01',
                   },
                   op: '=',
                 },
                 {
                   content: {
-                    fieldName: 'project.primary_site',
+                    field: 'project.primary_site',
                     value: 'Brain',
                   },
                   op: '=',
@@ -729,7 +729,7 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.access',
+                field: 'files.access',
                 value: 'protected4',
               },
               op: '=',
@@ -738,7 +738,7 @@ test('5.buildQuery "=" and "!=" nested', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'files.center.code',
+                    field: 'files.center.code',
                     value: '04',
                   },
                   op: '!=',
@@ -784,7 +784,7 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.access',
+                field: 'files.access',
                 value: 'protected',
               },
               op: '=',
@@ -793,14 +793,14 @@ test('5.buildQuery "=" and "!=" nested', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'files.center.code',
+                    field: 'files.center.code',
                     value: '01',
                   },
                   op: '!=',
                 },
                 {
                   content: {
-                    fieldName: 'project.primary_site',
+                    field: 'project.primary_site',
                     value: 'Brain',
                   },
                   op: '=',
@@ -847,14 +847,14 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.foo.name',
+                field: 'files.foo.name',
                 value: 'cname',
               },
               op: '=',
             },
             {
               content: {
-                fieldName: 'files.foo.code',
+                field: 'files.foo.code',
                 value: '01',
               },
               op: '=',
@@ -930,14 +930,14 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.foo.name',
+                field: 'files.foo.name',
                 value: 'cname',
               },
               op: '=',
             },
             {
               content: {
-                fieldName: 'files.foo.code',
+                field: 'files.foo.code',
                 value: '01',
               },
               op: '!=',
@@ -1013,14 +1013,14 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.foo.name',
+                field: 'files.foo.name',
                 value: 'cname',
               },
               op: '!=',
             },
             {
               content: {
-                fieldName: 'files.foo.code',
+                field: 'files.foo.code',
                 value: '01',
               },
               op: '=',
@@ -1096,7 +1096,7 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.foo.name',
+                field: 'files.foo.name',
                 value: 'cname',
               },
               op: '!=',
@@ -1145,7 +1145,7 @@ test('5.buildQuery "=" and "!=" nested', () => {
       input: {
         filters: {
           content: {
-            fieldName: 'files.foo.code',
+            field: 'files.foo.code',
             value: ['01'],
           },
           op: 'not-in',
@@ -1180,14 +1180,14 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.foo.bar.name',
+                field: 'files.foo.bar.name',
                 value: 'cname',
               },
               op: '=',
             },
             {
               content: {
-                fieldName: 'files.foo.bar.code',
+                field: 'files.foo.bar.code',
                 value: '01',
               },
               op: '=',
@@ -1288,14 +1288,14 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.foo.bar.name',
+                field: 'files.foo.bar.name',
                 value: 'cname',
               },
               op: '!=',
             },
             {
               content: {
-                fieldName: 'files.foo.bar.code',
+                field: 'files.foo.bar.code',
                 value: '01',
               },
               op: '=',
@@ -1396,14 +1396,14 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.nn.baz.name',
+                field: 'files.nn.baz.name',
                 value: 'cname',
               },
               op: '!=',
             },
             {
               content: {
-                fieldName: 'files.code',
+                field: 'files.code',
                 value: 'beep',
               },
               op: '=',
@@ -1464,21 +1464,21 @@ test('5.buildQuery "=" and "!=" nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.data_category',
+                field: 'files.data_category',
                 value: ['Simple Nucleotide Variation'],
               },
               op: 'in',
             },
             {
               content: {
-                fieldName: 'files.experimental_strategy',
+                field: 'files.experimental_strategy',
                 value: ['WXS'],
               },
               op: 'in',
             },
             {
               content: {
-                fieldName: 'files.analysis.metadata.read_groups.is_paired_end',
+                field: 'files.analysis.metadata.read_groups.is_paired_end',
                 value: ['__missing__'],
               },
               op: 'in',

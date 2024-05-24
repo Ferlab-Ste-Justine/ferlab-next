@@ -1,4 +1,4 @@
-import buildQuery from '#src/legacy/buildQuery';
+import buildQuery from 'src/legacy/buildQuery';
 
 test('1.buildQuery should handle empty sqon', () => {
   expect(
@@ -18,7 +18,7 @@ test('2.buildQuery "and" and "or" ops', () => {
         filters: {
           content: [
             {
-              content: { fieldName: 'project_code', value: ['ACC'] },
+              content: { field: 'project_code', value: ['ACC'] },
               op: 'in',
             },
           ],
@@ -34,7 +34,7 @@ test('2.buildQuery "and" and "or" ops', () => {
         filters: {
           content: [
             {
-              content: { fieldName: 'project_code', value: ['ACC'] },
+              content: { field: 'project_code', value: ['ACC'] },
               op: 'in',
             },
           ],
@@ -52,7 +52,7 @@ test('2.buildQuery "and" and "or" ops', () => {
           content: [
             {
               op: 'in',
-              content: { fieldName: 'project_code', value: ['__missing__'] },
+              content: { field: 'project_code', value: ['__missing__'] },
             },
           ],
         },
@@ -86,7 +86,7 @@ test('3.buildQuery "all" ops', () => {
           content: [
             {
               content: {
-                fieldName: 'diagnoses.diagnosis',
+                field: 'diagnoses.diagnosis',
                 value: ['ganglioglioma', 'low grade glioma'],
               },
               op: 'all',
@@ -150,7 +150,7 @@ test('3.buildQuery "all" ops', () => {
           content: [
             {
               content: {
-                fieldName: 'diagnoses.diagnosis',
+                field: 'diagnoses.diagnosis',
                 value: ['ganglioglioma', 'low grade glioma'],
               },
               op: 'all',
@@ -214,7 +214,7 @@ test('4.buildQuery "and", "or" ops nested inside each other', () => {
             {
               content: [
                 {
-                  content: { fieldName: 'project_code', value: ['ACC'] },
+                  content: { field: 'project_code', value: ['ACC'] },
                   op: 'in',
                 },
               ],
@@ -251,7 +251,7 @@ test('5.buildQuery "=" and "!=" ops', () => {
       input: {
         filters: {
           content: {
-            fieldName: 'project_code',
+            field: 'project_code',
             value: ['ACC'],
           },
           op: '=',
@@ -263,7 +263,7 @@ test('5.buildQuery "=" and "!=" ops', () => {
       input: {
         filters: {
           content: {
-            fieldName: 'project_code',
+            field: 'project_code',
             value: 'ACC',
           },
           op: '!=',
@@ -278,8 +278,8 @@ test('5.buildQuery "=" and "!=" ops', () => {
         filters: {
           op: 'and',
           content: [
-            { op: '=', content: { fieldName: 'program', value: ['TCGA'] } },
-            { op: '=', content: { fieldName: 'status', value: ['legacy'] } },
+            { op: '=', content: { field: 'program', value: ['TCGA'] } },
+            { op: '=', content: { field: 'status', value: ['legacy'] } },
           ],
         },
       },
@@ -295,14 +295,14 @@ test('5.buildQuery "=" and "!=" ops', () => {
           content: [
             {
               content: {
-                fieldName: 'program',
+                field: 'program',
                 value: ['TCGA'],
               },
               op: '=',
             },
             {
               content: {
-                fieldName: 'status',
+                field: 'status',
                 value: ['legacy'],
               },
               op: '!=',
@@ -330,14 +330,14 @@ test('5.buildQuery "=" and "!=" ops', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'program',
+                    field: 'program',
                     value: ['TCGA'],
                   },
                   op: '=',
                 },
                 {
                   content: {
-                    fieldName: 'project',
+                    field: 'project',
                     value: ['ACC'],
                   },
                   op: '=',
@@ -347,7 +347,7 @@ test('5.buildQuery "=" and "!=" ops', () => {
             },
             {
               content: {
-                fieldName: 'status',
+                field: 'status',
                 value: ['legacy'],
               },
               op: '=',
@@ -374,14 +374,14 @@ test('5.buildQuery "=" and "!=" ops', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'program',
+                    field: 'program',
                     value: ['TCGA'],
                   },
                   op: '=',
                 },
                 {
                   content: {
-                    fieldName: 'project',
+                    field: 'project',
                     value: ['ACC'],
                   },
                   op: '=',
@@ -389,7 +389,7 @@ test('5.buildQuery "=" and "!=" ops', () => {
               ],
               op: 'and',
             },
-            { op: '!=', content: { fieldName: 'status', value: ['legacy'] } },
+            { op: '!=', content: { field: 'status', value: ['legacy'] } },
           ],
           op: 'and',
         },
@@ -414,14 +414,14 @@ test('5.buildQuery "=" and "!=" ops', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'program',
+                    field: 'program',
                     value: ['TCGA'],
                   },
                   op: '=',
                 },
                 {
                   content: {
-                    fieldName: 'project',
+                    field: 'project',
                     value: ['ACC'],
                   },
                   op: '!=',
@@ -431,7 +431,7 @@ test('5.buildQuery "=" and "!=" ops', () => {
             },
             {
               content: {
-                fieldName: 'status',
+                field: 'status',
                 value: ['legacy'],
               },
               op: '=',
@@ -458,14 +458,14 @@ test('5.buildQuery "=" and "!=" ops', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'program',
+                    field: 'program',
                     value: ['TCGA'],
                   },
                   op: '=',
                 },
                 {
                   content: {
-                    fieldName: 'project',
+                    field: 'project',
                     value: ['ACC'],
                   },
                   op: '!=',
@@ -475,7 +475,7 @@ test('5.buildQuery "=" and "!=" ops', () => {
             },
             {
               content: {
-                fieldName: 'status',
+                field: 'status',
                 value: ['legacy'],
               },
               op: '!=',
@@ -502,14 +502,14 @@ test('5.buildQuery "=" and "!=" ops', () => {
           content: [
             {
               content: {
-                fieldName: 'program',
+                field: 'program',
                 value: ['TCGA'],
               },
               op: '=',
             },
             {
               content: {
-                fieldName: 'status',
+                field: 'status',
                 value: ['legacy'],
               },
               op: '=',
@@ -530,12 +530,12 @@ test('5.buildQuery "=" and "!=" ops', () => {
           content: [
             {
               content: {
-                fieldName: 'program',
+                field: 'program',
                 value: ['TCGA'],
               },
               op: '=',
             },
-            { op: '!=', content: { fieldName: 'status', value: ['legacy'] } },
+            { op: '!=', content: { field: 'status', value: ['legacy'] } },
           ],
           op: 'or',
         },
@@ -557,7 +557,7 @@ test('5.buildQuery "=" and "!=" ops', () => {
           content: [
             {
               content: {
-                fieldName: 'project',
+                field: 'project',
                 value: ['ACC'],
               },
               op: '=',
@@ -566,14 +566,14 @@ test('5.buildQuery "=" and "!=" ops', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'program',
+                    field: 'program',
                     value: ['TCGA'],
                   },
                   op: '=',
                 },
                 {
                   content: {
-                    fieldName: 'status',
+                    field: 'status',
                     value: ['legacy'],
                   },
                   op: '=',
@@ -604,7 +604,7 @@ test('5.buildQuery "=" and "!=" ops', () => {
           content: [
             {
               content: {
-                fieldName: 'access',
+                field: 'access',
                 value: 'protected',
               },
               op: '!=',
@@ -613,14 +613,14 @@ test('5.buildQuery "=" and "!=" ops', () => {
               content: [
                 {
                   content: {
-                    fieldName: 'center.code',
+                    field: 'center.code',
                     value: '01',
                   },
                   op: '=',
                 },
                 {
                   content: {
-                    fieldName: 'cases.project.primary_site',
+                    field: 'cases.project.primary_site',
                     value: 'Brain',
                   },
                   op: '=',
@@ -650,7 +650,7 @@ test('5.buildQuery "=" and "!=" ops', () => {
       input: {
         filters: {
           content: {
-            fieldName: 'is_canonical',
+            field: 'is_canonical',
             value: [true],
           },
           op: '=',
@@ -662,7 +662,7 @@ test('5.buildQuery "=" and "!=" ops', () => {
       input: {
         filters: {
           content: {
-            fieldName: 'case_count',
+            field: 'case_count',
             value: [24601],
           },
           op: '=',
@@ -685,7 +685,7 @@ test('6.buildQuery "<=" and "=>"', () => {
       input: {
         filters: {
           content: {
-            fieldName: 'cases.clinical.age_at_diagnosis',
+            field: 'cases.clinical.age_at_diagnosis',
             value: ['20'],
           },
           op: '<=',
@@ -703,7 +703,7 @@ test('6.buildQuery "<=" and "=>"', () => {
             {
               op: '<=',
               content: {
-                fieldName: 'cases.clinical.age_at_diagnosis',
+                field: 'cases.clinical.age_at_diagnosis',
                 value: ['20'],
               },
             },
@@ -728,14 +728,14 @@ test('6.buildQuery "<=" and "=>"', () => {
           content: [
             {
               content: {
-                fieldName: 'cases.clinical.age_at_diagnosis',
+                field: 'cases.clinical.age_at_diagnosis',
                 value: ['30'],
               },
               op: '<=',
             },
             {
               content: {
-                fieldName: 'cases.clinical.age_at_diagnosis',
+                field: 'cases.clinical.age_at_diagnosis',
                 value: ['20'],
               },
               op: '>=',
@@ -767,21 +767,21 @@ test('6.buildQuery "<=" and "=>"', () => {
           content: [
             {
               content: {
-                fieldName: 'cases.clinical.age_at_diagnosis',
+                field: 'cases.clinical.age_at_diagnosis',
                 value: ['30'],
               },
               op: '<=',
             },
             {
               content: {
-                fieldName: 'cases.clinical.age_at_diagnosis',
+                field: 'cases.clinical.age_at_diagnosis',
                 value: ['20'],
               },
               op: '>=',
             },
             {
               content: {
-                fieldName: 'cases.clinical.days_to_death',
+                field: 'cases.clinical.days_to_death',
                 value: ['100'],
               },
               op: '>=',
@@ -818,14 +818,14 @@ test('6.buildQuery "<=" and "=>"', () => {
           content: [
             {
               content: {
-                fieldName: 'cases.clinical.date_of_birth',
+                field: 'cases.clinical.date_of_birth',
                 value: ['2017-01-01'],
               },
               op: '>=',
             },
             {
               content: {
-                fieldName: 'cases.clinical.date_of_birth',
+                field: 'cases.clinical.date_of_birth',
                 value: ['2017-12-01'],
               },
               op: '<=',
@@ -863,14 +863,14 @@ test('6.buildQuery "<=" and "=>"', () => {
           content: [
             {
               content: {
-                fieldName: 'cases.clinical.date_of_birth',
+                field: 'cases.clinical.date_of_birth',
                 value: ['2017-01-01 00:00:00.000000'],
               },
               op: '>=',
             },
             {
               content: {
-                fieldName: 'cases.clinical.date_of_birth',
+                field: 'cases.clinical.date_of_birth',
                 value: ['2017-12-01 00:00:00.000000'],
               },
               op: '<=',
@@ -917,7 +917,7 @@ test('7.buildQuery "all"', () => {
       content: [
         {
           content: {
-            fieldName: 'files.kf_id',
+            field: 'files.kf_id',
             value: ['GF_JBMG9T1M', 'GF_WCYF2AH4'],
           },
           op: 'all',
@@ -980,7 +980,7 @@ test('8.buildQuery "between"', () => {
       content: [
         {
           content: {
-            fieldName: 'biospecimens.age_at_event_days',
+            field: 'biospecimens.age_at_event_days',
             value: [200, '10000'],
           },
           op: 'between',
@@ -1029,7 +1029,7 @@ test('9.buildQuery "not-in" op', () => {
       content: [
         {
           content: {
-            fieldName: 'kf_id',
+            field: 'kf_id',
             value: ['id_1', 'id_2', 'id_3'],
           },
           op: 'not-in',
@@ -1076,7 +1076,7 @@ test('9.buildQuery "not-in" op', () => {
 //             op: 'all',
 //             pivot: 'asdf',
 //             content: {
-//               fieldName: 'files.kf_id',
+//               field: 'files.kf_id',
 //               value: ['GF_JBMG9T1M', 'GF_WCYF2AH4'],
 //             },
 //           },

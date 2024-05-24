@@ -1,4 +1,4 @@
-import flattenAggregations from '#src/legacy/flattenAggregations';
+import flattenAggregations from 'src/legacy/flattenAggregations';
 
 test('1.flattenAggregations', () => {
   const tests = [

@@ -1,4 +1,7 @@
-import _ from 'lodash';
+import flatMap from 'lodash/flatMap';
+import get from 'lodash/get';
+import max from 'lodash/max';
+import min from 'lodash/min';
 
 import {
   ALL_OP,
@@ -11,7 +14,6 @@ import {
   ES_MUST_NOT,
   ES_NESTED,
   ES_QUERY,
-  ES_SHOULD,
   ES_WILDCARD,
   FILTER_OP,
   GT_OP,
@@ -46,7 +48,7 @@ const wrapFilter = ({ esFilter, nestedFieldNames, filter, isNot }: any) =>
     .map((p, i, segments) => segments.slice(0, i + 1).join('.'))
     .filter((p) => nestedFieldNames?.includes?.(p))
     .reverse()
-    ?.reduce((esFilter, path, i) => wrapNested(esFilter, path), isNot ? wrapMustNot(esFilter) : esFilter);
+    ?.reduce((esFilter, path) => wrapNested(esFilter, path), isNot ? wrapMustNot(esFilter) : esFilter);
 
 function getRegexFilter({ nestedFieldNames, filter }) {
   const {
@@ -83,12 +85,12 @@ function getTermFilter({ nestedFieldNames, filter }) {
 
 function getFuzzyFilter({ nestedFieldNames, filter }) {
   const { content } = filter;
-  const { value, fieldNames } = content;
+  const { value, fields } = content;
 
   // group queries by their nesting level
   const sortedNested = nestedFieldNames?.slice().sort((a, b) => b.length - a.length);
   const nestedMap =
-    fieldNames?.reduce((acc, field) => {
+    fields?.reduce((acc, field) => {
       const group = sortedNested?.find((y) => field?.includes?.(y)) || '';
       if (acc[group]) {
         acc[group].push(field);
@@ -144,7 +146,7 @@ function getRangeFilter({ nestedFieldNames, filter }) {
       range: {
         [field]: {
           boost: 0,
-          [op]: toEsRangeValue([GT_OP, GTE_OP]?.includes?.(op) ? _.max(value) : _.min(value)),
+          [op]: toEsRangeValue([GT_OP, GTE_OP]?.includes?.(op) ? max(value) : min(value)),
         },
       },
     },
@@ -154,10 +156,10 @@ function getRangeFilter({ nestedFieldNames, filter }) {
 function collapseNestedFilters({ esFilter, bools }) {
   const filterIsNested = isNested(esFilter);
   const basePath = [...(filterIsNested ? [ES_NESTED, ES_QUERY] : []), ES_BOOL];
-  const path: any = [ES_MUST, ES_MUST_NOT].map((p) => [...basePath, p]).find((path) => _.get(esFilter, path));
+  const path: any = [ES_MUST, ES_MUST_NOT].map((p) => [...basePath, p]).find((path) => get(esFilter, path));
 
   const found =
-    path && bools.find((bool) => (filterIsNested ? readPath(bool) === readPath(esFilter) : _.get(bool, path)));
+    path && bools.find((bool) => (filterIsNested ? readPath(bool) === readPath(esFilter) : get(bool, path)));
 
   return [
     ...bools.filter((bool) => bool !== found),
@@ -167,10 +169,10 @@ function collapseNestedFilters({ esFilter, bools }) {
           path,
           filterIsNested
             ? collapseNestedFilters({
-                esFilter: _.get(esFilter, path)[0],
-                bools: _.get(found, path, []),
+                esFilter: get(esFilter, path)[0],
+                bools: get(found, path, []),
               })
-            : [..._.get(found, path), ..._.get(esFilter, path)]
+            : [...get(found, path), ...get(esFilter, path)]
         )
       : esFilter,
   ];
@@ -208,7 +210,7 @@ function getSetFilter({ nestedFieldNames, filter, filter: { content, op } }) {
         [content.field]: {
           index: ES_ARRANGER_SET_INDEX,
           type: ES_ARRANGER_SET_TYPE,
-          id: _.flatMap([content.value])[0].replace('set_id:', ''),
+          id: flatMap([content.value])[0].replace('set_id:', ''),
           path: 'ids',
         },
       },
@@ -227,8 +229,8 @@ const getBetweenFilter = ({ nestedFieldNames, filter }) => {
       range: {
         [field]: {
           boost: 0,
-          [GTE_OP]: _.min(value),
-          [LTE_OP]: _.max(value),
+          [GTE_OP]: min(value),
+          [LTE_OP]: max(value),
         },
       },
     },

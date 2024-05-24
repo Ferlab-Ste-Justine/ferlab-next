@@ -93,7 +93,7 @@ export default function ({ aggregationsFilterThemselves, graphqlFields, nestedFi
         ? c.content?.field?.startsWith(nestedPaths)
         : c.content?.field?.startsWith(nestedPaths) && c.content?.field !== field
     );
-    const termFilters = contentsFiltered.map((filter) => opSwitch({ nestedFieldNames: [], filter }));
+    const termFilters = contentsFiltered.map((filter) => opSwitch({ nestedFieldNames, filter }));
 
     const fieldAggregation = createFieldAggregation({
       field,

@@ -15,7 +15,7 @@ const getNestedSqonFilters = ({ sqon = null, nestedFieldNames = [], accumulator 
     );
   } else {
     const {
-      content: { field: sqonFieldName, fieldNames: sqonFieldNames },
+      content: { field: sqonFieldName, fields: sqonFieldNames },
     } = sqon;
     const fieldNames = sqonFieldNames || [sqonFieldName];
     fieldNames.forEach((field) => {

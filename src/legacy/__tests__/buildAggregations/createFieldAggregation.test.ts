@@ -1,8 +1,8 @@
-import createFieldAggregation from '#src/legacy/buildAggregations/createFieldAggregation';
+import createFieldAggregation from 'src/legacy/buildAggregations/createFieldAggregation';
 
 test('1.createFieldAggregation should compute aggregation cardinality (for field files.kf_id)', () => {
   const input = {
-    fieldName: 'files.kf_id',
+    field: 'files.kf_id',
     graphqlField: {
       cardinality: {},
     },
@@ -20,7 +20,7 @@ test('1.createFieldAggregation should compute aggregation cardinality (for field
 
 test('2.createFieldAggregation should compute aggregation cardinality (for field family_id)', () => {
   const input = {
-    fieldName: 'family_id',
+    field: 'family_id',
     graphqlField: {
       cardinality: {},
     },
@@ -38,7 +38,7 @@ test('2.createFieldAggregation should compute aggregation cardinality (for field
 
 test('3.createFieldAggregation should compute top hits aggregation', () => {
   const input = {
-    fieldName: 'observed_phenotype.name',
+    field: 'observed_phenotype.name',
     graphqlField: {
       buckets: {
         key: {},
@@ -92,7 +92,7 @@ test('3.createFieldAggregation should compute top hits aggregation', () => {
 
 test('4.createFieldAggregation should compute top hits aggregation and revert nested', () => {
   const input = {
-    fieldName: 'observed_phenotype.name',
+    field: 'observed_phenotype.name',
     graphqlField: {
       buckets: {
         key: {},
@@ -156,7 +156,7 @@ test('5.createFieldAggregation should compute top hits aggregation and filter by
       content: [
         {
           content: {
-            fieldName: 'observed_phenotype.is_tagged',
+            field: 'observed_phenotype.is_tagged',
             value: 'true',
           },
           op: 'in',
@@ -167,7 +167,7 @@ test('5.createFieldAggregation should compute top hits aggregation and filter by
   };
 
   const input = {
-    fieldName: 'observed_phenotype.name',
+    field: 'observed_phenotype.name',
     graphqlField: {
       buckets: {
         key: {},
@@ -242,7 +242,7 @@ test('5.createFieldAggregation should compute top hits aggregation and filter by
 
 test('6.createFieldAggregation should handle multiple aggregation types per field', () => {
   const input = {
-    fieldName: 'sequencing_experiments.mean_depth',
+    field: 'sequencing_experiments.mean_depth',
     graphqlField: {
       stats: { max: {} },
       histogram: {
@@ -270,7 +270,7 @@ test('6.createFieldAggregation should handle multiple aggregation types per fiel
 
 test('7.createFieldAggregation should generate nested terms filters in aggs ', () => {
   const input = {
-    fieldName: 'donors.zygosity',
+    field: 'donors.zygosity',
     graphqlField: {
       buckets: {
         key: {},

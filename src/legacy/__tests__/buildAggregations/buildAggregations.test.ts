@@ -1,5 +1,5 @@
-import buildAggregations from '#src/legacy/buildAggregations';
-import buildQuery from '#src/legacy/buildQuery';
+import buildAggregations from 'src/legacy/buildAggregations';
+import buildQuery from 'src/legacy/buildQuery';
 
 test('1.buildAggregations should handle nested aggregations', () => {
   const nestedFieldNames = [
@@ -196,7 +196,7 @@ test('2.buildAggregations should handle nested aggregations with filters on the 
       content: [
         {
           content: {
-            fieldName: 'participants.kf_id',
+            field: 'participants.kf_id',
             value: ['PT_87QW2JKA'],
           },
           op: 'in',
@@ -246,21 +246,21 @@ test('3.buildAggregations should handle `aggregations_filter_themselves` variabl
     content: [
       {
         content: {
-          fieldName: 'acl',
+          field: 'acl',
           value: ['phs000178'],
         },
         op: 'in',
       },
       {
         content: {
-          fieldName: 'mdx',
+          field: 'mdx',
           value: 100,
         },
         op: '>=',
       },
       {
         content: {
-          fieldName: 'mdx',
+          field: 'mdx',
           value: 200,
         },
         op: '<=',
@@ -337,21 +337,21 @@ test('4.buildAggregations should handle `aggregations_filter_themselves` variabl
     content: [
       {
         content: {
-          fieldName: 'acl',
+          field: 'acl',
           value: ['phs000178'],
         },
         op: 'in',
       },
       {
         content: {
-          fieldName: 'mdx',
+          field: 'mdx',
           value: 100,
         },
         op: '>=',
       },
       {
         content: {
-          fieldName: 'mdx',
+          field: 'mdx',
           value: 200,
         },
         op: '<=',
@@ -399,7 +399,7 @@ test('5.buildAggregations should handle queries not in a group', () => {
     content: [
       {
         content: {
-          fieldName: 'case',
+          field: 'case',
           value: [1],
         },
         op: 'in',
@@ -443,7 +443,7 @@ test('6.buildAggregations should drop nested sqon filters down to appropriate ag
     content: [
       {
         content: {
-          fieldName: 'participants.diagnoses.mondo_id_diagnosis',
+          field: 'participants.diagnoses.mondo_id_diagnosis',
           value: ['SOME_VALUE'],
         },
         op: 'in',
@@ -529,14 +529,14 @@ test('7.buildAggregations can drop nested sqon filters down to filters excluding
     content: [
       {
         content: {
-          fieldName: 'participants.diagnoses.mondo_id_diagnosis',
+          field: 'participants.diagnoses.mondo_id_diagnosis',
           value: ['SOME_VALUE'],
         },
         op: 'in',
       },
       {
         content: {
-          fieldName: 'participants.diagnoses.source_text_diagnosis',
+          field: 'participants.diagnoses.source_text_diagnosis',
           value: ['SOME_VALUE'],
         },
         op: 'in',
@@ -665,14 +665,14 @@ test('8.buildAggregations can drop nested sqon filters down to filters including
     content: [
       {
         content: {
-          fieldName: 'participants.diagnoses.mondo_id_diagnosis',
+          field: 'participants.diagnoses.mondo_id_diagnosis',
           value: ['SOME_VALUE'],
         },
         op: 'in',
       },
       {
         content: {
-          fieldName: 'participants.diagnoses.source_text_diagnosis',
+          field: 'participants.diagnoses.source_text_diagnosis',
           value: ['SOME_VALUE'],
         },
         op: 'in',

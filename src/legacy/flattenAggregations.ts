@@ -1,6 +1,6 @@
 import get from 'lodash/get';
 
-import { CARDINALITY, HISTOGRAM, MISSING, STATS } from '#src/legacy/constants';
+import { CARDINALITY, HISTOGRAM, MISSING, STATS } from './constants';
 
 const flattenAggregations = ({ aggregations, includeMissing = true }) => {
   return Object.entries(aggregations).reduce((prunedAggs, [key, value]) => {

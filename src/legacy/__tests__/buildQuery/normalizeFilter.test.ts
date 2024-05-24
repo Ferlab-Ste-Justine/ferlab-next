@@ -1,5 +1,5 @@
-import normalizeFilters from '#src/legacy/buildQuery/normalizeFilters';
-import { AND_OP, IN_OP } from '#src/legacy/constants';
+import normalizeFilters from 'src/legacy/buildQuery/normalizeFilters';
+import { AND_OP, IN_OP } from 'src/legacy/constants';
 
 test(`1.normalizeFilters must handle falsy sqon`, () => {
   const input = null;
@@ -13,7 +13,7 @@ test(`2.normalizeFilters must preserve pivots`, () => {
     content: [
       {
         content: {
-          fieldName: 'nested.some_field',
+          field: 'nested.some_field',
           value: ['val1'],
         },
         op: IN_OP,
@@ -27,7 +27,7 @@ test(`2.normalizeFilters must preserve pivots`, () => {
     content: [
       {
         content: {
-          fieldName: 'nested.some_field',
+          field: 'nested.some_field',
           value: ['val1'],
         },
         op: IN_OP,

@@ -1,4 +1,4 @@
-import buildQuery from '#src/legacy/buildQuery';
+import buildQuery from 'src/legacy/buildQuery';
 
 test('1.buildQuery wildcard nested', () => {
   const nestedFieldNames = ['files', 'files.foo'];
@@ -8,7 +8,7 @@ test('1.buildQuery wildcard nested', () => {
       input: {
         nestedFieldNames,
         filters: {
-          content: { fieldName: 'case_id', value: ['006*'] },
+          content: { field: 'case_id', value: ['006*'] },
           op: 'in',
         },
       },
@@ -18,7 +18,7 @@ test('1.buildQuery wildcard nested', () => {
       input: {
         nestedFieldNames,
         filters: {
-          content: [{ content: { fieldName: 'case_id', value: ['006*'] }, op: 'in' }],
+          content: [{ content: { field: 'case_id', value: ['006*'] }, op: 'in' }],
           op: 'and',
         },
       },
@@ -28,7 +28,7 @@ test('1.buildQuery wildcard nested', () => {
       input: {
         nestedFieldNames,
         filters: {
-          content: { fieldName: 'case_id', value: ['006*', 'v1'] },
+          content: { field: 'case_id', value: ['006*', 'v1'] },
           op: 'in',
         },
       },
@@ -44,7 +44,7 @@ test('1.buildQuery wildcard nested', () => {
         filters: {
           content: [
             {
-              content: { fieldName: 'case_id', value: ['006*', 'v1'] },
+              content: { field: 'case_id', value: ['006*', 'v1'] },
               op: 'in',
             },
           ],
@@ -69,11 +69,11 @@ test('1.buildQuery wildcard nested', () => {
         filters: {
           content: [
             {
-              content: { fieldName: 'case_id', value: ['006*', 'v1'] },
+              content: { field: 'case_id', value: ['006*', 'v1'] },
               op: 'in',
             },
             {
-              content: { fieldName: 'project.primary_site', value: ['Brain'] },
+              content: { field: 'project.primary_site', value: ['Brain'] },
               op: 'in',
             },
           ],
@@ -99,7 +99,7 @@ test('1.buildQuery wildcard nested', () => {
         filters: {
           content: [
             {
-              content: { fieldName: 'files.foo.name', value: 'cname*' },
+              content: { field: 'files.foo.name', value: 'cname*' },
               op: '=',
             },
           ],
@@ -141,7 +141,7 @@ test('1.buildQuery wildcard nested', () => {
           content: [
             {
               content: {
-                fieldName: 'files.foo.name',
+                field: 'files.foo.name',
                 value: ['*cname', 'cn*me', 'cname*'],
               },
               op: 'in',
@@ -244,15 +244,15 @@ test('1.buildQuery wildcard nested', () => {
         filters: {
           content: [
             {
-              content: { fieldName: 'files.foo.name1', value: '*cname' },
+              content: { field: 'files.foo.name1', value: '*cname' },
               op: '=',
             },
             {
-              content: { fieldName: 'files.foo.name2', value: 'cn*me' },
+              content: { field: 'files.foo.name2', value: 'cn*me' },
               op: '=',
             },
             {
-              content: { fieldName: 'files.foo.name3', value: 'cname*' },
+              content: { field: 'files.foo.name3', value: 'cname*' },
               op: '=',
             },
           ],
