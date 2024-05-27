@@ -1,6 +1,5 @@
 import { GraphQLBoolean, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
-import ColumnsStateType from './columnsStateType';
 import GraphQLJSON from './jsonType';
 import { SortType } from './sortType';
 

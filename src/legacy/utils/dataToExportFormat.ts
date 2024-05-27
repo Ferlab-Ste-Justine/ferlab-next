@@ -263,7 +263,7 @@ example args:
   valueWhenEmpty: '--' }
 */
 const rowToJSON = (args) => {
-  const { row, data = row, paths, pathIndex = 0, columns, valueWhenEmpty, entities = [] } = args;
+  const { row, columns, valueWhenEmpty } = args;
   return (columns || [])
     .filter((col) => col.show)
     .reduce((output, col) => {

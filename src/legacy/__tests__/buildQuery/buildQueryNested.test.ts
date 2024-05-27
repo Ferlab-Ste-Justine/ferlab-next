@@ -1548,9 +1548,8 @@ test('5.buildQuery "=" and "!=" nested', () => {
     },
   ];
 
-  tests.forEach(({ input, output }, i) => {
+  tests.forEach(({ input, output }) => {
     const actualOutput = buildQuery(input);
-
     expect(actualOutput).toEqual(output);
   });
 });

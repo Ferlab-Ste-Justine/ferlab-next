@@ -11,6 +11,7 @@ const config: Config = {
   transform: {
     '^.+\\.(ts|tsx)?$': ['ts-jest', { useESM: true }],
   },
+  extensionsToTreatAsEsm: ['.ts'],
 };
 
 export default config;

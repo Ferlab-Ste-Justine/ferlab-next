@@ -9,6 +9,11 @@
 
 ## Development
 
+* Execute: `npm run dev`
+
+* Execute: `npm link` in ferlab-next
+* Execute: `npm link @ferlab/next` in your local project
+
 Helped by https://advancedweb.hu/modern-javascript-library-starter
 
 ### General

@@ -10,7 +10,7 @@
     "prettier/prettier": ["error"],
     "max-len": ["error", { "code": 120, "ignoreComments": true } ],
     "@typescript-eslint/no-explicit-any": "warn",
-    "no-console": ["warn", { "allow": ["warn", "error", "info"] }],
+    "no-console": ["warn", { "allow": ["warn", "error", "info", "time", "timeEnd"] }],
     "@typescript-eslint/no-unused-vars": ["warn", { "argsIgnorePattern": "^_" }],
     "simple-import-sort/imports": "error",
     "simple-import-sort/exports": "error",
