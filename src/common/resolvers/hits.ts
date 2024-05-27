@@ -1,12 +1,14 @@
 import searchHits from '#src/elasticsearch/searchHits';
+import { IContext } from '#src/types';
 
-const hitsResolver = async (parent, args, type, esClient) => {
+const hitsResolver = async (parent, args, type, context: IContext) => {
   if (Array.isArray(parent)) {
     return { total: parent.length || 0, edges: parent };
   }
 
   const nestedFields = type.extensions.nestedFields || [];
-  const index = type.extensions.esIndex || '';
+  const esIndex = context.getESIndexByIndex(type.name) || '';
+  const esClient = context.esClient;
 
   const result = await searchHits({
     sort: args.sort,
@@ -15,7 +17,7 @@ const hitsResolver = async (parent, args, type, esClient) => {
     offset: args.offset,
     searchAfter: args.searchAfter,
     nestedFields,
-    index,
+    index: esIndex,
     esClient,
   });
 

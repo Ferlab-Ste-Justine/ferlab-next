@@ -2,11 +2,13 @@
 import getFields from 'graphql-fields';
 
 import searchAggregations from '#src/elasticsearch/searchAggregations';
+import { IContext } from '#src/types';
 
-const aggsResolver = async (args, info, type, esClient) => {
+const aggsResolver = async (args, info, type, context: IContext) => {
   const graphqlFields = getFields(info, {}, { processArguments: true });
   const nestedFields = type.extensions.nestedFields || [];
-  const index = type.extensions.esIndex || '';
+  const esIndex = context.getESIndexByIndex(type.name) || '';
+  const esClient = context.esClient;
 
   return searchAggregations({
     sqon: args.filters,
@@ -14,7 +16,7 @@ const aggsResolver = async (args, info, type, esClient) => {
     includeMissing: args.include_missing,
     graphqlFields,
     nestedFields,
-    index,
+    index: esIndex,
     esClient,
   });
 };
