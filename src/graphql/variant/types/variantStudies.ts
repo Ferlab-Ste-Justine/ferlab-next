@@ -1,9 +1,9 @@
 import { GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
 import { aggregationsType, AggsStateType, ColumnsStateType, MatchBoxStateType } from '#src/common/types';
+import GraphQLJSON from '#src/common/types/jsonType';
 
 import { totalType } from './frequencies';
-import GraphQLJSON from './variant';
 
 /** way of have hits.edges.node all combined in one const type */
 export const VariantStudiesType = new GraphQLObjectType({

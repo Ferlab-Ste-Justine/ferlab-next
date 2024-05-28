@@ -14,6 +14,7 @@ import GenesType from '../../gene/types/gene';
 import extendedMapping from '../extendedMapping';
 import { frequenciesType } from './frequencies';
 import VariantAggType from './variantAgg';
+import { VariantStudiesType } from './variantStudies';
 
 const ClinvarType = new GraphQLObjectType({
   name: 'ClinvarType',
@@ -39,38 +40,13 @@ const CmcType = new GraphQLObjectType({
   }),
 });
 
-export const totalType = new GraphQLObjectType({
-  name: 'totalType',
-  fields: () => ({
-    ac: { type: GraphQLInt },
-    pc: { type: GraphQLInt },
-    hom: { type: GraphQLInt },
-    pn: { type: GraphQLInt },
-    an: { type: GraphQLInt },
-    af: { type: GraphQLFloat },
-    ap: { type: GraphQLFloat },
-    pf: { type: GraphQLFloat },
-  }),
-});
-
-export const StudiesVariantType = new GraphQLObjectType({
-  name: 'StudiesVariantType',
-  fields: () => ({
-    id: { type: GraphQLString, resolve: (parent) => parent.study_code },
-    study_id: { type: GraphQLString },
-    study_code: { type: GraphQLString },
-    zygosity: { type: new GraphQLList(GraphQLString) },
-    total: { type: totalType },
-  }),
-});
-
 export const VariantType = new GraphQLObjectType({
   name: 'Variant',
   fields: () => ({
     id: { type: GraphQLString, resolve: (parent) => parent.locus },
     hgvsg: { type: GraphQLString },
     locus: { type: GraphQLString },
-    studies: { type: StudiesVariantType },
+    studies: { type: VariantStudiesType },
     genes: { type: GenesType, resolve: (parent) => parent.genes },
     alternate: { type: GraphQLString },
     assembly_version: { type: GraphQLString },
@@ -90,7 +66,7 @@ export const VariantType = new GraphQLObjectType({
     cmc: { type: CmcType },
     external_frequencies: { type: frequenciesType },
     internal_frequencies_wgs: { type: frequenciesType },
-    study_frequencies_wgs: { type: StudiesVariantType },
+    study_frequencies_wgs: { type: VariantStudiesType },
   }),
   extensions: {
     nestedFields: [
@@ -126,7 +102,7 @@ export const VariantHitsType = new GraphQLObjectType({
   }),
 });
 
-const VariantsType = new GraphQLObjectType({
+export const VariantsType = new GraphQLObjectType({
   name: 'VariantsType',
   fields: () => ({
     hits: {
