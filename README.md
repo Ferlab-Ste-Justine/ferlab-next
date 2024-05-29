@@ -9,15 +9,21 @@
 
 ## Development
 
-* Execute: `npm run dev`
+* Execute: `npm run dev` to test the build with your changes
 
-* Execute: `npm link` in ferlab-next
-* Execute: `npm link @ferlab/next` in your local project
+### with local wrapper-next project:
 
-Helped by https://advancedweb.hu/modern-javascript-library-starter
+* Execute: `npm link` here in ferlab-next
+* Execute: `npm link @ferlab/next` in your local wrapper-next project
 
-### General
+OR (because there are incompatibility with duplicate graphql module when we start the wrapper-next with ferlab-next in link)
 
-### Test
+* Execute: `npm pack` here in ferlab-next: this creates "ferlab-next-x.x.x.tgz"
+* Execute `npm install ../ferlab-next/ferlab-next-x.x.x.tgz` in your local wrapper-next project
+* Then you are allow to run dev your local wrapper-next project with the pack without have to push to npm your local of ferlab-next
+
+## Test
 
 * Execute: `npm run test`
+
+Starter helped by https://advancedweb.hu/modern-javascript-library-starter

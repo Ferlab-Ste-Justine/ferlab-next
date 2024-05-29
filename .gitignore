@@ -10,3 +10,4 @@ lib
 compiled
 .awcache
 .rpt2_cache
+*.tgz
