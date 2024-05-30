@@ -50,3 +50,4 @@ export const aggregationsType = GraphQLJSON;
 
 export { default as AggregationsType } from './aggregationsType';
 export { default as ColumnsStateType } from './columnsStateType';
+export { default as GraphQLJSON } from './jsonType';

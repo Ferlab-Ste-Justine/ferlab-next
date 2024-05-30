@@ -35,9 +35,6 @@ export const VariantType = new GraphQLObjectType({
     hgvsg: { type: GraphQLString },
     locus: { type: GraphQLString },
     studies: { type: variantStudiesType },
-    genes: { type: GenesType, resolve: (parent) => parent.genes },
-    //todo: genes by gene_centric
-    // genes2: { type: GenesType },
     alternate: { type: GraphQLString },
     assembly_version: { type: GraphQLString },
     chromosome: { type: GraphQLString },
@@ -56,7 +53,7 @@ export const VariantType = new GraphQLObjectType({
     cmc: { type: CmcType },
     external_frequencies: { type: FrequenciesType },
     internal_frequencies_wgs: { type: FrequenciesType },
-    study_frequencies_wgs: { type: variantStudiesType, resolve: (parent) => parent.study_frequencies_wgs },
+    study_frequencies_wgs: { type: variantStudiesType },
   }),
   extensions: {
     nestedFields: [

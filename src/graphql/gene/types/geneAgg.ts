@@ -3,7 +3,7 @@ import { GraphQLObjectType } from 'graphql';
 import AggregationsType, { NumericAggregationsType } from '#src/common/types/aggregationsType';
 
 const GeneAggType = new GraphQLObjectType({
-  name: 'VariantAggType',
+  name: 'GeneAggType',
   fields: {
     alias: { type: AggregationsType },
     biotype: { type: AggregationsType },
