@@ -2,7 +2,7 @@ import { GraphQLFloat, GraphQLList, GraphQLObjectType, GraphQLString } from 'gra
 
 import GenesType from '../../gene/types/gene';
 import { FrequenciesType } from './frequencies';
-import variantStudiesType from './variantStudies';
+import VariantStudiesType from './variantStudies';
 
 const ClinvarType = new GraphQLObjectType({
   name: 'ClinvarType',
@@ -34,7 +34,7 @@ export const VariantType = new GraphQLObjectType({
     id: { type: GraphQLString, resolve: (parent) => parent.locus },
     hgvsg: { type: GraphQLString },
     locus: { type: GraphQLString },
-    studies: { type: variantStudiesType },
+    studies: { type: VariantStudiesType },
     alternate: { type: GraphQLString },
     assembly_version: { type: GraphQLString },
     chromosome: { type: GraphQLString },
@@ -53,7 +53,7 @@ export const VariantType = new GraphQLObjectType({
     cmc: { type: CmcType },
     external_frequencies: { type: FrequenciesType },
     internal_frequencies_wgs: { type: FrequenciesType },
-    study_frequencies_wgs: { type: variantStudiesType },
+    study_frequencies_wgs: { type: VariantStudiesType },
   }),
   extensions: {
     nestedFields: [

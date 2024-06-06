@@ -35,10 +35,7 @@ const CosmicsType = new GraphQLObjectType({
     hits: {
       type: CosmicHitsType,
       args: hitsArgsType,
-      resolve: async (parent) => {
-        const results = parent.cosmic;
-        return { total: results?.length || 0, edges: results || [] };
-      },
+      resolve: async (parent) => ({ total: parent?.length || 0, edges: parent || [] }),
     },
     mapping: { type: GraphQLJSON },
     extended: { type: GraphQLJSON },

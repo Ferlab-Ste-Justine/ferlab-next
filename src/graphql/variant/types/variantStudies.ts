@@ -44,10 +44,7 @@ const VariantStudiesType = new GraphQLObjectType({
           },
         }),
       }),
-      resolve: async (parent) => {
-        const results = parent.studies;
-        return { total: results?.length || 0, edges: results || [] };
-      },
+      resolve: async (parent) => ({ total: parent?.length || 0, edges: parent || [] }),
     },
     mapping: { type: GraphQLJSON },
     extended: { type: GraphQLJSON },

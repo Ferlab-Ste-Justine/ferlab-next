@@ -35,10 +35,7 @@ const DddsType = new GraphQLObjectType({
     hits: {
       type: DddHitsType,
       args: hitsArgsType,
-      resolve: async (parent) => {
-        const results = parent.ddd;
-        return { total: results?.length || 0, edges: results || [] };
-      },
+      resolve: async (parent) => ({ total: parent?.length || 0, edges: parent || [] }),
     },
     mapping: { type: GraphQLJSON },
     extended: { type: GraphQLJSON },
