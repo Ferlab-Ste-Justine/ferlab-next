@@ -1,6 +1,6 @@
 {
   "name": "@ferlab/next",
-  "version": "0.0.13",
+  "version": "0.0.14",
   "description": "Shared library for our wrappers GraphQL APIs",
   "main": "lib/index.js",
   "type": "module",

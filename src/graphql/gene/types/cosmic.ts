@@ -6,7 +6,7 @@ import GraphQLJSON from '#src/common/types/jsonType';
 const CosmicType = new GraphQLObjectType({
   name: 'CosmicType',
   fields: () => ({
-    tumour_types_germline: { type: GraphQLString },
+    tumour_types_germline: { type: new GraphQLList(GraphQLString) },
   }),
 });
 
