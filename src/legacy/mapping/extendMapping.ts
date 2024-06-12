@@ -1,5 +1,6 @@
 import startCase from 'lodash/startCase';
 
+import { getEsMappingProperties } from '../../elasticsearch/utils';
 import {
   ColumnConfigsInterface,
   ConfigProperties,
@@ -11,9 +12,13 @@ import {
 } from '../types';
 import flattenMapping from './flattenMapping';
 
-export const getExtendedFields = async ({ mapping, extendedMapping }) => {
+export const getExtendedFields = async (context: any, index: string) => {
   try {
-    const fieldsFromMapping = await flattenMappingToFields(mapping);
+    const { getExtendedMappingByIndex, getESIndexByIndex, esClient } = context;
+    const extendedMapping = getExtendedMappingByIndex(index);
+    const esIndex = getESIndexByIndex(index);
+    const esMappingProperties = await getEsMappingProperties({ esClient, esIndex });
+    const fieldsFromMapping = await flattenMappingToFields(esMappingProperties);
     return extendFields(fieldsFromMapping, extendedMapping);
   } catch (err) {
     console.log(

@@ -302,11 +302,7 @@ const dataToStream = ({ fileType = 'tsv', ...args }) => {
 const dataToExportFormat = async ({ columns, context, fileType = 'tsv', index, uniqueBy, valueWhenEmpty = '--' }) => {
   let isFirst = true;
   let chunkCounts = 0;
-  const { getExtendedMappingByIndex, getESIndexByIndex, esClient } = context;
-  const extendedMapping = getExtendedMappingByIndex(index);
-  const esIndex = getESIndexByIndex(index);
-  const mapping = await getEsMapping({ esIndex, esClient });
-  const extendedFields = await getExtendedFields({ extendedMapping, mapping });
+  const extendedFields = await getExtendedFields(context, index);
 
   const extendedFieldsDict =
     extendedFields?.reduce?.(

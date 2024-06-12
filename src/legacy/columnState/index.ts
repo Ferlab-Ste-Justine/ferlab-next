@@ -1,6 +1,6 @@
 import flattenDeep from 'lodash/flattenDeep';
 
-import { getEsMapping } from '#src/elasticsearch/utils';
+import { getEsMappingProperties } from '#src/elasticsearch/utils';
 
 import { I_Column, I_ColumnSetState } from './types';
 
@@ -90,12 +90,8 @@ export const createColumnSetState = async ({
   esIndex = '',
   esClient,
 }): Promise<I_ColumnSetState> => {
-  const rawEsmapping = await getEsMapping({
-    esIndex,
-    esClient,
-  });
-  const mapping = rawEsmapping[Object.keys(rawEsmapping)[0]].mappings;
-  const columns: I_Column[] = mappingToColumnsState(mapping.properties);
+  const esMappingProperties = await getEsMappingProperties({ esIndex, esClient });
+  const columns: I_Column[] = mappingToColumnsState(esMappingProperties);
   return {
     state: {
       type: graphqlField,

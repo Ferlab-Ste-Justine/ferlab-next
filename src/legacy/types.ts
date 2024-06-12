@@ -1,15 +1,17 @@
 import { Client } from '@opensearch-project/opensearch';
-import { GraphQLResolveInfo } from 'graphql';
+import { GraphQLResolveInfo, GraphQLSchema } from 'graphql';
 
 export interface IQueryContext {
-  es: Client;
+  auth: any;
+  schema: GraphQLSchema;
+  esClient: Client;
+  getExtendedMappingByIndex: (graphqlIndex: string) => I_ExtendedMappingSetFieldInput[];
+  getESIndexByIndex: (graphqlIndex: string) => string;
+  MAX_DOWNLOAD_ROWS: number;
+  ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS: boolean;
 }
 
 export type ResolverOutput<T> = T | Promise<T>;
-
-export interface EsIndexLocation {
-  esIndex: string;
-}
 
 export type Resolver<Output, Args = any> =
   | ((a: any, args: Args, c: IQueryContext, d: GraphQLResolveInfo & { mergeInfo }) => ResolverOutput<Output>)

@@ -1,6 +1,6 @@
 import { PassThrough } from 'stream';
 
-import { getEsMapping } from '#src/elasticsearch/utils';
+import { getEsMapping, getEsMappingProperties } from '#src/elasticsearch/utils';
 
 import runQuery from '../../graphql/runQuery';
 import buildQuery from '../buildQuery';
@@ -23,11 +23,9 @@ const ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS = false;
  * @param index
  */
 const getAllData = async ({ chunkSize = DOWNLOAD_STREAM_BUFFER_SIZE, context, maxRows, sort = [], sqon, index }) => {
-  const { getExtendedMappingByIndex, getESIndexByIndex, esClient, schema } = context;
-  const extendedMapping = getExtendedMappingByIndex(index);
+  const { esClient, schema, getESIndexByIndex } = context;
   const esIndex = getESIndexByIndex(index);
-  const mapping = await getEsMapping({ esIndex, esClient });
-  const extendedFields = await getExtendedFields({ extendedMapping, mapping });
+  const extendedFields = await getExtendedFields(context, index);
 
   const stream = new PassThrough({ objectMode: true });
 
@@ -35,9 +33,6 @@ const getAllData = async ({ chunkSize = DOWNLOAD_STREAM_BUFFER_SIZE, context, ma
   // eslint-disable-next-line @typescript-eslint/ban-ts-comment
   // @ts-ignore
   const esSort = sort.map(({ field, order }) => ({ [field]: order })).concat({ _id: 'asc' });
-
-  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-  // @ts-ignore
   const nestedFieldNames = extendedFields.filter(({ type }) => type === 'nested').map(({ field }) => field);
 
   const query = buildQuery({ nestedFieldNames, filters: sqon });
