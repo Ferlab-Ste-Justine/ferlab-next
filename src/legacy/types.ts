@@ -7,7 +7,6 @@ export interface IQueryContext {
   esClient: Client;
   getExtendedMappingByIndex: (graphqlIndex: string) => I_ExtendedMappingSetFieldInput[];
   getESIndexByIndex: (graphqlIndex: string) => string;
-  getIdKeyByIndex: (graphqlIndex: string) => string;
   MAX_DOWNLOAD_ROWS: number;
   ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS: boolean;
 }
