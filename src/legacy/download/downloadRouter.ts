@@ -3,6 +3,8 @@ import defaults from 'lodash/defaults';
 import { pack as tarPack } from 'tar-stream';
 import zlib from 'zlib';
 
+import { IQueryContext } from '#src/legacy/types';
+
 import dataToExportFormat from '../utils/dataToExportFormat';
 import getAllData from '../utils/getAllData';
 
@@ -106,7 +108,7 @@ const downloadRouter = (resolveContext) => {
     try {
       console.time('download');
 
-      const context = await resolveContext(req);
+      const context: IQueryContext = await resolveContext(req);
       const { params } = req.body;
       const { output, responseFileName, contentType } = await dataStream({
         context,

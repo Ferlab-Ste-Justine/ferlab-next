@@ -1,6 +1,6 @@
 import { PassThrough } from 'stream';
 
-import { getEsMapping, getEsMappingProperties } from '#src/elasticsearch/utils';
+import { IQueryContext } from '#src/legacy/types';
 
 import runQuery from '../../graphql/runQuery';
 import buildQuery from '../buildQuery';
@@ -23,7 +23,7 @@ const ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS = false;
  * @param index
  */
 const getAllData = async ({ chunkSize = DOWNLOAD_STREAM_BUFFER_SIZE, context, maxRows, sort = [], sqon, index }) => {
-  const { esClient, schema, getESIndexByIndex } = context;
+  const { esClient, schema, getESIndexByIndex } = <IQueryContext>context;
   const esIndex = getESIndexByIndex(index);
   const extendedFields = await getExtendedFields(context, index);
 

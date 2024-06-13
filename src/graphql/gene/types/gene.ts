@@ -1,5 +1,8 @@
-import { GraphQLFloat, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
+import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
+import { aggregationsType, AggsStateType, ColumnsStateType, hitsArgsType, MatchBoxStateType } from '#src/common/types';
+
+import GraphQLJSON from '../../../common/types/jsonType';
 import ConsequencesType from './consequence';
 import CosmicsType from './cosmic';
 import DddsType from './ddd';
@@ -54,4 +57,41 @@ export const GeneType = new GraphQLObjectType({
   },
 });
 
-export default GeneType;
+const GeneEdgesType = new GraphQLObjectType({
+  name: 'GeneEdgesType',
+  fields: () => ({
+    searchAfter: { type: GraphQLJSON },
+    node: { type: GeneType },
+  }),
+});
+
+const GeneHitsType = new GraphQLObjectType({
+  name: 'GeneHitsType',
+  fields: () => ({
+    total: { type: GraphQLInt },
+    edges: {
+      type: new GraphQLList(GeneEdgesType),
+      resolve: async (parent, args) => parent.edges.map((node) => ({ searchAfter: args?.searchAfter || [], node })),
+    },
+  }),
+});
+
+const GenesType = new GraphQLObjectType({
+  name: 'GenesType',
+  fields: () => ({
+    hits: {
+      type: GeneHitsType,
+      args: hitsArgsType,
+      //todo: if parent, add all parent.gene_ids in sqon to find genes by variant in gene index. Ask link between gene and variant
+      resolve: async (parent) => ({ total: parent?.length || 0, edges: parent || [] }),
+    },
+    mapping: { type: GraphQLJSON },
+    extended: { type: GraphQLJSON },
+    aggsState: { type: AggsStateType },
+    columnsState: { type: ColumnsStateType },
+    matchBoxState: { type: MatchBoxStateType },
+    aggregations: { type: aggregationsType },
+  }),
+});
+
+export default GenesType;

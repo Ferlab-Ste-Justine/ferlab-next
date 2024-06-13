@@ -54,6 +54,7 @@ export const VariantType = new GraphQLObjectType({
     external_frequencies: { type: FrequenciesType },
     internal_frequencies_wgs: { type: FrequenciesType },
     study_frequencies_wgs: { type: VariantStudiesType },
+    genes: { type: GenesType },
   }),
   extensions: {
     nestedFields: [
