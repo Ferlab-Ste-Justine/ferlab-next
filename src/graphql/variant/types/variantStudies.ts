@@ -1,50 +1,49 @@
 import { GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
-import { aggregationsType, AggsStateType, ColumnsStateType, MatchBoxStateType } from '#src/common/types';
+import { edgesResolver, hitsResolver } from '#src/common/resolvers';
+import { aggregationsType, AggsStateType, ColumnsStateType, hitsArgsType, MatchBoxStateType } from '#src/common/types';
 import GraphQLJSON from '#src/common/types/jsonType';
 
 import { TotalType } from './frequencies';
 
-/** way of have hits.edges.node all combined in one const type */
+export const VariantStudyType = new GraphQLObjectType({
+  name: 'VariantStudyType',
+  fields: () => ({
+    id: { type: GraphQLString },
+    study_code: { type: GraphQLString },
+    study_id: { type: GraphQLString },
+    transmission: { type: new GraphQLList(GraphQLString) },
+    zygosity: { type: new GraphQLList(GraphQLString) },
+    total: { type: TotalType },
+  }),
+});
+
+const VariantStudyEdgesType = new GraphQLObjectType({
+  name: 'VariantStudyEdgesType',
+  fields: () => ({
+    searchAfter: { type: GraphQLJSON },
+    node: { type: VariantStudyType },
+  }),
+});
+
+const VariantStudiesHitsType = new GraphQLObjectType({
+  name: 'VariantStudiesHitsType',
+  fields: () => ({
+    total: { type: GraphQLInt },
+    edges: {
+      type: new GraphQLList(VariantStudyEdgesType),
+      resolve: (parent) => edgesResolver(parent),
+    },
+  }),
+});
+
 const VariantStudiesType = new GraphQLObjectType({
   name: 'VariantStudiesType',
   fields: () => ({
     hits: {
-      type: new GraphQLObjectType({
-        name: 'VariantStudyHitsType',
-        fields: () => ({
-          total: { type: GraphQLInt },
-          edges: {
-            type: new GraphQLList(
-              new GraphQLObjectType({
-                name: 'VariantStudyEdgesType',
-                fields: () => ({
-                  searchAfter: { type: GraphQLJSON },
-                  node: {
-                    type: new GraphQLObjectType({
-                      name: 'VariantStudyType',
-                      fields: () => ({
-                        id: { type: GraphQLString },
-                        study_code: { type: GraphQLString },
-                        study_id: { type: GraphQLString },
-                        transmission: { type: new GraphQLList(GraphQLString) },
-                        zygosity: { type: new GraphQLList(GraphQLString) },
-                        total: { type: TotalType },
-                      }),
-                    }),
-                  },
-                }),
-              })
-            ),
-            resolve: async (parent, args) =>
-              parent.edges.map((node) => ({
-                searchAfter: args?.searchAfter || [],
-                node,
-              })),
-          },
-        }),
-      }),
-      resolve: async (parent) => ({ total: parent?.length || 0, edges: parent || [] }),
+      type: VariantStudiesHitsType,
+      args: hitsArgsType,
+      resolve: async (parent, args, context) => hitsResolver(parent, args, VariantStudyType, context.esClient),
     },
     mapping: { type: GraphQLJSON },
     extended: { type: GraphQLJSON },

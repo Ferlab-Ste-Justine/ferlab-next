@@ -1,5 +1,6 @@
 import { GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
+import { edgesResolver, hitsResolver } from '#src/common/resolvers';
 import { aggregationsType, AggsStateType, ColumnsStateType, hitsArgsType, MatchBoxStateType } from '#src/common/types';
 import GraphQLJSON from '#src/common/types/jsonType';
 
@@ -24,7 +25,7 @@ const CosmicHitsType = new GraphQLObjectType({
     total: { type: GraphQLInt },
     edges: {
       type: new GraphQLList(CosmicEdgesType),
-      resolve: async (parent, args) => parent.edges.map((node) => ({ searchAfter: args?.searchAfter || [], node })),
+      resolve: (parent) => edgesResolver(parent),
     },
   }),
 });
@@ -35,7 +36,7 @@ const CosmicsType = new GraphQLObjectType({
     hits: {
       type: CosmicHitsType,
       args: hitsArgsType,
-      resolve: async (parent) => ({ total: parent?.length || 0, edges: parent || [] }),
+      resolve: async (parent, args, context) => hitsResolver(parent, args, CosmicType, context.esClient),
     },
     mapping: { type: GraphQLJSON },
     extended: { type: GraphQLJSON },

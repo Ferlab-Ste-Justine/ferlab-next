@@ -1,5 +1,6 @@
 import { GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
+import { edgesResolver, hitsResolver } from '#src/common/resolvers';
 import { aggregationsType, AggsStateType, ColumnsStateType, hitsArgsType, MatchBoxStateType } from '#src/common/types';
 import GraphQLJSON from '#src/common/types/jsonType';
 
@@ -14,21 +15,21 @@ export const OmimType = new GraphQLObjectType({
   }),
 });
 
+const OmimEdgesType = new GraphQLObjectType({
+  name: 'OmimEdgesType',
+  fields: () => ({
+    searchAfter: { type: GraphQLJSON },
+    node: { type: OmimType },
+  }),
+});
+
 const OmimHitsType = new GraphQLObjectType({
   name: 'OmimHitsType',
   fields: () => ({
     total: { type: GraphQLInt },
     edges: {
-      type: new GraphQLList(
-        new GraphQLObjectType({
-          name: 'OmimEdgesType',
-          fields: () => ({
-            searchAfter: { type: GraphQLJSON },
-            node: { type: OmimType },
-          }),
-        })
-      ),
-      resolve: async (parent, args) => parent.edges.map((node) => ({ searchAfter: args?.searchAfter || [], node })),
+      type: new GraphQLList(OmimEdgesType),
+      resolve: (parent) => edgesResolver(parent),
     },
   }),
 });
@@ -39,7 +40,7 @@ export const OmimsType = new GraphQLObjectType({
     hits: {
       type: OmimHitsType,
       args: hitsArgsType,
-      resolve: async (parent) => ({ total: parent?.length || 0, edges: parent || [] }),
+      resolve: async (parent, args, context) => hitsResolver(parent, args, OmimType, context.esClient),
     },
     mapping: { type: GraphQLJSON },
     extended: { type: GraphQLJSON },

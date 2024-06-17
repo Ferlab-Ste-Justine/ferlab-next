@@ -1,5 +1,6 @@
 import { GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
+import { edgesResolver, hitsResolver } from '#src/common/resolvers';
 import { aggregationsType, AggsStateType, ColumnsStateType, hitsArgsType, MatchBoxStateType } from '#src/common/types';
 import GraphQLJSON from '#src/common/types/jsonType';
 
@@ -13,21 +14,21 @@ export const OrphanetType = new GraphQLObjectType({
   }),
 });
 
+const OrphanetEdgesType = new GraphQLObjectType({
+  name: 'OrphanetEdgesType',
+  fields: () => ({
+    searchAfter: { type: GraphQLJSON },
+    node: { type: OrphanetType },
+  }),
+});
+
 const OrphanetHitsType = new GraphQLObjectType({
   name: 'OrphanetHitsType',
   fields: () => ({
     total: { type: GraphQLInt },
     edges: {
-      type: new GraphQLList(
-        new GraphQLObjectType({
-          name: 'OrphanetEdgesType',
-          fields: () => ({
-            searchAfter: { type: GraphQLJSON },
-            node: { type: OrphanetType },
-          }),
-        })
-      ),
-      resolve: async (parent, args) => parent.edges.map((node) => ({ searchAfter: args?.searchAfter || [], node })),
+      type: new GraphQLList(OrphanetEdgesType),
+      resolve: (parent) => edgesResolver(parent),
     },
   }),
 });
@@ -38,7 +39,7 @@ export const OrphanetsType = new GraphQLObjectType({
     hits: {
       type: OrphanetHitsType,
       args: hitsArgsType,
-      resolve: async (parent) => ({ total: parent?.length || 0, edges: parent || [] }),
+      resolve: async (parent, args, context) => hitsResolver(parent, args, OrphanetType, context.esClient),
     },
     mapping: { type: GraphQLJSON },
     extended: { type: GraphQLJSON },

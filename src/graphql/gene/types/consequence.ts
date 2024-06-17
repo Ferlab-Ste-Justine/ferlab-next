@@ -1,5 +1,6 @@
 import { GraphQLBoolean, GraphQLFloat, GraphQLInt, GraphQLList, GraphQLObjectType, GraphQLString } from 'graphql';
 
+import { edgesResolver, hitsResolver } from '#src/common/resolvers';
 import { aggregationsType, AggsStateType, ColumnsStateType, hitsArgsType, MatchBoxStateType } from '#src/common/types';
 import GraphQLJSON from '#src/common/types/jsonType';
 
@@ -109,7 +110,7 @@ const ConsequenceHitsType = new GraphQLObjectType({
     total: { type: GraphQLInt },
     edges: {
       type: new GraphQLList(ConsequenceEdgesType),
-      resolve: async (parent, args) => parent.edges.map((node) => ({ searchAfter: args?.searchAfter || [], node })),
+      resolve: (parent) => edgesResolver(parent),
     },
   }),
 });
@@ -120,7 +121,7 @@ export const ConsequencesType = new GraphQLObjectType({
     hits: {
       type: ConsequenceHitsType,
       args: hitsArgsType,
-      resolve: async (parent) => ({ total: parent?.length || 0, edges: parent || [] }),
+      resolve: async (parent, args, context) => hitsResolver(parent, args, ConsequenceType, context.esClient),
     },
     mapping: { type: GraphQLJSON },
     extended: { type: GraphQLJSON },

@@ -2,7 +2,7 @@ import searchHits from '#src/elasticsearch/searchHits';
 
 const hitsResolver = async (parent, args, type, esClient) => {
   if (Array.isArray(parent)) {
-    return { total: parent.length || 0, edges: parent };
+    return { total: parent.length || 0, edges: parent, args };
   }
 
   const nestedFields = type.extensions.nestedFields || [];
@@ -19,7 +19,7 @@ const hitsResolver = async (parent, args, type, esClient) => {
     esClient,
   });
 
-  return { total: result.total || 0, edges: result.hits || [] };
+  return { total: result.total || 0, edges: result.hits || [], args };
 };
 
 export default hitsResolver;
