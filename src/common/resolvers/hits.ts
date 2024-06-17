@@ -19,7 +19,14 @@ const hitsResolver = async (parent, args, type, esClient) => {
     esClient,
   });
 
-  return { total: result.total || 0, edges: result.hits || [], args };
+  const edges =
+    result?.hits?.map((hit) => ({
+      id: hit._id,
+      _sort: hit.sort,
+      ...hit._source,
+    })) || [];
+
+  return { total: result.total || 0, edges, args };
 };
 
 export default hitsResolver;

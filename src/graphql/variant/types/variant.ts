@@ -31,7 +31,7 @@ const CmcType = new GraphQLObjectType({
 export const VariantType = new GraphQLObjectType({
   name: 'Variant',
   fields: () => ({
-    id: { type: GraphQLString, resolve: (parent) => parent.locus },
+    id: { type: GraphQLString },
     hgvsg: { type: GraphQLString },
     locus: { type: GraphQLString },
     studies: { type: VariantStudiesType },

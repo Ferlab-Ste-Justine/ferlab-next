@@ -30,7 +30,7 @@ const SpliceaiType = new GraphQLObjectType({
 export const GeneType = new GraphQLObjectType({
   name: 'GeneType',
   fields: () => ({
-    id: { type: GraphQLString, resolve: (parent) => parent.alias },
+    id: { type: GraphQLString },
     alias: { type: new GraphQLList(GraphQLString) },
     biotype: { type: GraphQLString },
     chromosome: { type: GraphQLString },

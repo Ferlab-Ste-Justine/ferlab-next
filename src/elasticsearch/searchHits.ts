@@ -38,7 +38,7 @@ const searchHits = async ({
 
   return {
     total: hits?.total?.value,
-    hits: hits?.hits?.map((h) => h._source) || [],
+    hits: hits?.hits || [],
   };
 };
 
