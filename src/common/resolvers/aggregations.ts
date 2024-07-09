@@ -3,7 +3,7 @@ import getFields from 'graphql-fields';
 
 import searchAggregations from '#src/elasticsearch/searchAggregations';
 
-const aggsResolver = async (args, info, type, esClient) => {
+const aggsResolver = async (args, info, type, esClient, devMode = false) => {
   const graphqlFields = getFields(info, {}, { processArguments: true });
   const nestedFields = type.extensions.nestedFields || [];
   const index = type.extensions.esIndex || '';
@@ -16,6 +16,7 @@ const aggsResolver = async (args, info, type, esClient) => {
     nestedFields,
     index,
     esClient,
+    devMode,
   });
 };
 

@@ -14,11 +14,12 @@
 ### with local wrapper-next project:
 
 * Execute: `npm link` here in ferlab-next
-* Execute: `npm link @ferlab/next` in your local wrapper-next project
+* Execute: `npm link @ferlab/next` in your local wrapper-next project to connect ferlab-next and import it.
 
-OR (because there are incompatibility with duplicate graphql module when we start the wrapper-next with ferlab-next in link)
+But currently the start doesn't work because there are incompatibility with duplicate graphql module when we start the wrapper-next with ferlab-next in link.
+So use `pack` feature: 
 
-* Execute: `npm pack` here in ferlab-next: this creates "ferlab-next-x.x.x.tgz"
+* Execute: `npm run pack` here in ferlab-next: it builds and creates the file "ferlab-next-x.x.x.tgz"
 * Execute `npm install ../ferlab-next/ferlab-next-x.x.x.tgz` in your local wrapper-next project
 * Then you are allow to run dev your local wrapper-next project with the pack without have to push to npm your local of ferlab-next
 

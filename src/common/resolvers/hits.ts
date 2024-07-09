@@ -1,6 +1,6 @@
 import searchHits from '#src/elasticsearch/searchHits';
 
-const hitsResolver = async (parent, args, type, esClient) => {
+const hitsResolver = async (parent, args, type, esClient, devMode = false) => {
   if (Array.isArray(parent)) {
     return { total: parent.length || 0, edges: parent, args };
   }
@@ -17,6 +17,7 @@ const hitsResolver = async (parent, args, type, esClient) => {
     nestedFields,
     index,
     esClient,
+    devMode,
   });
 
   const edges =

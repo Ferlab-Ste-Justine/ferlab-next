@@ -13,11 +13,18 @@ const searchHits = async ({
   searchAfter,
   offset = 0,
   esClient,
+  devMode = false,
 }) => {
   const query = buildQuery({
     nestedFieldNames: nestedFields,
     filters: sqon,
   });
+
+  if (devMode) {
+    const uniqueId = Math.random().toString(36).substring(2, 15);
+    console.debug('[searchHits]', uniqueId, 'sqon:', JSON.stringify(sqon));
+    console.debug('[searchHits]', uniqueId, 'buildQuery:', JSON.stringify(query));
+  }
 
   const body = {
     sort: simpleSorter(sort),

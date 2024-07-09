@@ -17,6 +17,7 @@ const searchAggregations = async ({
   includeMissing = true,
   index,
   esClient,
+  devMode = false,
 }) => {
   const query = buildQuery({
     nestedFieldNames: nestedFields,
@@ -30,6 +31,13 @@ const searchAggregations = async ({
     nestedFieldNames: nestedFields,
     aggregationsFilterThemselves,
   });
+
+  if (devMode) {
+    const uniqueId = Math.random().toString(36).substring(2, 15);
+    console.debug('[searchAggregations]', uniqueId, 'sqon:', JSON.stringify(sqon));
+    console.debug('[searchAggregations]', uniqueId, 'buildQuery:', JSON.stringify(query));
+    console.debug('[searchAggregations]', uniqueId, 'buildAggregations:', JSON.stringify(aggs));
+  }
 
   const body = Object.keys(query || {}).length ? { query, aggs } : { aggs };
 
