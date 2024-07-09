@@ -9,6 +9,7 @@ export interface IQueryContext {
   getESIndexByIndex: (graphqlIndex: string) => string;
   MAX_DOWNLOAD_ROWS: number;
   ALLOW_CUSTOM_MAX_DOWNLOAD_ROWS: boolean;
+  devMode?: boolean;
 }
 
 export type ResolverOutput<T> = T | Promise<T>;
