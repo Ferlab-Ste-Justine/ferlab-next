@@ -59,13 +59,14 @@ export const VariantType = new GraphQLObjectType({
   extensions: {
     nestedFields: [
       'genes',
-      'studies',
       'genes.consequences',
-      'genes.orphanet',
+      'genes.cosmic',
+      'genes.ddd',
       'genes.hpo',
       'genes.omim',
-      'genes.ddd',
-      'genes.cosmic',
+      'genes.orphanet',
+      'studies',
+      'study_frequencies_wgs',
     ],
     /** esIndex to override on each project with the wanted value */
     esIndex: 'variant_centric',

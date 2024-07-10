@@ -53,7 +53,7 @@ export const GeneType = new GraphQLObjectType({
     spliceai: { type: SpliceaiType },
   }),
   extensions: {
-    nestedFields: ['consequences'],
+    nestedFields: ['cosmic', 'ddd', 'hpo', 'omim', 'orphanet'],
     esIndex: 'gene_centric',
   },
 });
