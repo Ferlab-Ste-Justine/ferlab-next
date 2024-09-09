@@ -5,7 +5,7 @@ import { SetSqon, Sort } from '../sets/types';
 export type CreateUpdateBody = {
   alias: string;
   content: Content;
-  sharedPublicly: boolean;
+  sharedpublicly: boolean;
 };
 
 export type Content = {
@@ -21,7 +21,8 @@ export type Output = {
   uid: string;
   content: Content;
   alias: string;
-  sharedPublicly: boolean;
+  sharedpublicly: boolean;
+  is_phantom_manifest: boolean;
   creationDate: Date;
   updatedDate: Date;
   updated_date: Date;

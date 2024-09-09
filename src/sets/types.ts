@@ -15,6 +15,8 @@ export type CreateSetBody = {
   idField: string;
   sort: Sort[];
   tag: string;
+  sharedpublicly: boolean;
+  is_phantom_manifest: boolean;
 };
 
 export type UpdateSetTagBody = {
@@ -37,4 +39,6 @@ export type Set = {
   updated_date: Date;
   setType: string;
   ids: string[];
+  sharedpublicly: boolean;
+  is_phantom_manifest: boolean;
 };

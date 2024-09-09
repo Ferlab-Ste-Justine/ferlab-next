@@ -33,6 +33,7 @@ export const getUserSet = async (
 
 export const getSets = async (accessToken: string, usersApiURL: string): Promise<Set[]> => {
   const userContents = await getUserContents(accessToken, usersApiURL);
+  console.log('getSets userContents', userContents);
   return userContents.map((set) => mapResultToSet(set));
 };
 
@@ -45,7 +46,7 @@ export const createSet = async (
   schema,
   maxSetContentSize: number
 ): Promise<Set> => {
-  const { sqon, sort, type, idField, tag } = requestBody;
+  const { sqon, sort, type, idField, tag, sharedpublicly, is_phantom_manifest } = requestBody;
   const sqonAfterReplace = await resolveSetsInSqon(sqon, userId, accessToken, usersApiURL);
   const ids = await searchSqon(sqonAfterReplace, type, sort, idField, esClient, schema, maxSetContentSize);
 
@@ -53,7 +54,8 @@ export const createSet = async (
 
   const payload = {
     alias: tag,
-    sharedPublicly: false,
+    sharedpublicly,
+    is_phantom_manifest,
     content: { ids: truncatedIds, setType: type, sqon, sort, idField },
   } as CreateUpdateBody;
 
@@ -77,7 +79,7 @@ export const updateSetTag = async (
 
   const payload = {
     alias: requestBody.newTag,
-    sharedPublicly: setToUpdate.sharedPublicly,
+    sharedpublicly: setToUpdate.sharedpublicly,
     content: setToUpdate.content,
   } as CreateUpdateBody;
 
@@ -128,7 +130,7 @@ export const updateSetContent = async (
 
   const payload = {
     alias: setToUpdate.alias,
-    sharedPublicly: setToUpdate.sharedPublicly,
+    sharedpublicly: setToUpdate.sharedpublicly,
     content: { ...setToUpdate.content, sqon: existingSqonWithNewSqon, ids: truncatedIds },
   } as CreateUpdateBody;
 
@@ -150,6 +152,8 @@ const mapResultToSet = (output: Output): Set => ({
   updated_date: output.updated_date,
   setType: output.content.setType,
   ids: output.content.ids,
+  sharedpublicly: output.sharedpublicly,
+  is_phantom_manifest: output.is_phantom_manifest,
 });
 
 const truncateIds = (ids: string[], maxSetContentSize: number): string[] => {
