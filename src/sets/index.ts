@@ -7,6 +7,7 @@ import { resolveSetsInSqon } from '../sqon/resolveSetInSqon';
 import { searchSqon } from '../sqon/searchSqon';
 import { CreateUpdateBody, Output } from '../usersApi';
 import { deleteUserContent, getUserContents, postUserContent, putUserContent } from '../usersApi';
+import getFamilyIds from './getFamilyIds';
 import { SetNotFoundError } from './setError';
 import { CreateSetBody, Set, UpdateSetContentBody, UpdateSetTagBody } from './types';
 
@@ -44,13 +45,14 @@ export const createSet = async (
   usersApiURL,
   esClient,
   schema,
-  maxSetContentSize: number
+  maxSetContentSize: number,
+  esFileIndex: string
 ): Promise<Set> => {
-  const { sqon, sort, type, idField, tag, sharedpublicly, is_phantom_manifest } = requestBody;
+  const { sqon, sort, type, idField, tag, sharedpublicly, is_phantom_manifest, withFamily } = requestBody;
   const sqonAfterReplace = await resolveSetsInSqon(sqon, userId, accessToken, usersApiURL);
   const ids = await searchSqon(sqonAfterReplace, type, sort, idField, esClient, schema, maxSetContentSize);
-
-  const truncatedIds = truncateIds(ids, maxSetContentSize);
+  const idsWithFamily = withFamily ? await getFamilyIds(esClient, ids, maxSetContentSize, esFileIndex) : ids;
+  const truncatedIds = truncateIds(idsWithFamily, maxSetContentSize);
 
   const payload = {
     alias: tag,

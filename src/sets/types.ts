@@ -17,6 +17,7 @@ export type CreateSetBody = {
   tag: string;
   sharedpublicly: boolean;
   is_phantom_manifest: boolean;
+  withFamily?: boolean;
 };
 
 export type UpdateSetTagBody = {
