@@ -34,7 +34,6 @@ export const getUserSet = async (
 
 export const getSets = async (accessToken: string, usersApiURL: string): Promise<Set[]> => {
   const userContents = await getUserContents(accessToken, usersApiURL);
-  console.log('getSets userContents', userContents);
   return userContents.map((set) => mapResultToSet(set));
 };
 
