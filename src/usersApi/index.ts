@@ -26,6 +26,7 @@ export type Output = {
   creationDate: Date;
   updatedDate: Date;
   updated_date: Date;
+  is_invisible?: boolean;
 };
 
 export const getUserContents = async (accessToken: string, usersApiURL: string): Promise<Output[]> => {

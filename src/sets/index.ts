@@ -47,7 +47,7 @@ export const createSet = async (
   maxSetContentSize: number,
   esFileIndex: string
 ): Promise<Set> => {
-  const { sqon, sort, type, idField, tag, sharedpublicly, is_phantom_manifest, withFamily } = requestBody;
+  const { sqon, sort, type, idField, tag, sharedpublicly, is_phantom_manifest, withFamily, is_invisible } = requestBody;
   const sqonAfterReplace = await resolveSetsInSqon(sqon, userId, accessToken, usersApiURL);
   const ids = await searchSqon(sqonAfterReplace, type, sort, idField, esClient, schema, maxSetContentSize);
   const idsWithFamily = withFamily ? await getFamilyIds(esClient, ids, maxSetContentSize, esFileIndex) : ids;
@@ -58,6 +58,7 @@ export const createSet = async (
     sharedpublicly,
     is_phantom_manifest,
     content: { ids: truncatedIds, setType: type, sqon, sort, idField },
+    is_invisible: is_invisible ?? false,
   } as CreateUpdateBody;
 
   if (!payload.alias || !payload.content.ids) {
@@ -155,6 +156,7 @@ const mapResultToSet = (output: Output): Set => ({
   ids: output.content.ids,
   sharedpublicly: output.sharedpublicly,
   is_phantom_manifest: output.is_phantom_manifest,
+  is_invisible: output.is_invisible,
 });
 
 const truncateIds = (ids: string[], maxSetContentSize: number): string[] => {

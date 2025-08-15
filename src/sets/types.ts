@@ -18,6 +18,7 @@ export type CreateSetBody = {
   sharedpublicly: boolean;
   is_phantom_manifest: boolean;
   withFamily?: boolean;
+  is_invisible?: boolean;
 };
 
 export type UpdateSetTagBody = {
@@ -42,4 +43,5 @@ export type Set = {
   ids: string[];
   sharedpublicly: boolean;
   is_phantom_manifest: boolean;
+  is_invisible?: boolean;
 };
