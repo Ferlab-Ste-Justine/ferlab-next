@@ -11,7 +11,15 @@
 
 * Execute: `npm run dev` to test the build with your changes
 
-### with local wrapper-next project:
+### dev and connect with local wrapper-next project (without live reload):
+
+## with yalc
+
+* install yalc if not already: `npm install -g yalc`
+* Execute (every change): `yalc publish` here in ferlab-next
+* Execute (every change): `yalc add @ferlab/next` in your local cqdg-wrapper-api
+
+## with npm link (but not working with duplicate graphql module)
 
 * Execute: `npm link` here in ferlab-next
 * Execute: `npm link @ferlab/next` in your local wrapper-next project to connect ferlab-next and import it.
@@ -27,4 +35,7 @@ So use `pack` feature:
 
 * Execute: `npm run test`
 
-Starter helped by https://advancedweb.hu/modern-javascript-library-starter
+## Push to npm
+
+* Update version in package.json
+* push on main automatically publish to npm
