@@ -6,10 +6,14 @@ on:
 jobs:
   create-tag:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
     steps:
       - uses: actions/checkout@v3
-      - run: |
+      - id: tag
+        run: |
           current_version=next@$(node -p -e "require('./package.json').version")
+          git fetch --tags
           if [[ $(git tag -l "$current_version") ]]; then
             echo "Exit if tag already exists"
             exit 0
@@ -17,8 +21,31 @@ jobs:
           echo "creating tag $current_version"
           git tag $current_version
           git push --tags
+          echo "proceed=true" >> $GITHUB_OUTPUT
+    outputs:
+      proceed: ${{ steps.tag.outputs.proceed }}
+
+  build:
+    needs: create-tag
+    if: ${{ needs.create-tag.outputs.proceed == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: '18.19.1'
+      - name: Install dependencies and build
+        run: |
+          npm i
+          npm run build
+      - name: Upload build artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: lib
+          path: ./lib
 
   publish-to-npm:
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -26,15 +53,14 @@ jobs:
         with:
           node-version: '18.19.1'
           registry-url: 'https://registry.npmjs.org'
-      - name: Install dependencies and build
-        run: |
-          npm i
-          npm run build
+      - name: Download build artifact
+        uses: actions/download-artifact@v4
+        with:
+          name: lib
+          path: ./lib
       - name: Publish to NPM
         run: |
           current_version=next@$(node -p -e "require('./package.json').version")
-          # exit if tag already exists
-          [[ $(git tag -l "$current_version") ]] && exit 0
           echo "Publishing stable release $current_version"
           npm publish
         env:
