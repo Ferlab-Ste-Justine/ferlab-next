@@ -12,11 +12,12 @@ const getFilesInfo = async (
   fileIds: string[],
   es: Client,
   maxSetContentSize: number,
-  esFileIndex: string
+  esFileIndex: string,
+  fileIdField: string
 ): Promise<IFileInfo[]> => {
   const esRequest = {
-    query: { bool: { must: [{ terms: { file_id: fileIds, boost: 0 } }] } },
-    _source: ['file_id', 'data_type', 'participants.family_id'],
+    query: { bool: { must: [{ terms: { [fileIdField]: fileIds, boost: 0 } }] } },
+    _source: [fileIdField, 'data_type', 'participants.family_id'],
     sort: [{ data_type: { order: 'asc' } }],
     size: maxSetContentSize,
   };
@@ -45,7 +46,8 @@ const getFilesIdsMatched = async (
   filesInfos: IFileInfo[],
   es: Client,
   maxSetContentSize: number,
-  esFileIndex: string
+  esFileIndex: string,
+  fileIdField: string
 ): Promise<string[]> => {
   const filesIdsMatched = [];
   const results = await Promise.all(
@@ -64,7 +66,7 @@ const getFilesIdsMatched = async (
             ],
           },
         },
-        _source: ['file_id'],
+        _source: [fileIdField],
         size: maxSetContentSize,
       };
       return executeSearch(es, esFileIndex, esRequest);
@@ -74,7 +76,7 @@ const getFilesIdsMatched = async (
   for (const res of results) {
     const hits = res?.body?.hits?.hits || [];
     const sources = hits.map((hit) => hit._source);
-    filesIdsMatched.push(...sources.map((s) => s.file_id));
+    filesIdsMatched.push(...sources.map((s) => s[fileIdField]));
   }
 
   return filesIdsMatched;
@@ -87,16 +89,18 @@ const getFilesIdsMatched = async (
  * @param {string[]} fileIds
  * @param {number} maxSetContentSize
  * @param {string} esFileIndex
+ * @param {string} fileIdField ES field holding the file id (e.g. `stable_file_id`), defaults to `file_id`
  * @returns {Promise<string[]>}
  */
 const getFamilyIds = async (
   esClient: Client,
   fileIds: string[],
   maxSetContentSize: number,
-  esFileIndex: string
+  esFileIndex: string,
+  fileIdField = 'file_id'
 ): Promise<string[]> => {
-  const filesInfos = await getFilesInfo(fileIds, esClient, maxSetContentSize, esFileIndex);
-  const filesIdsMatched = await getFilesIdsMatched(filesInfos, esClient, maxSetContentSize, esFileIndex);
+  const filesInfos = await getFilesInfo(fileIds, esClient, maxSetContentSize, esFileIndex, fileIdField);
+  const filesIdsMatched = await getFilesIdsMatched(filesInfos, esClient, maxSetContentSize, esFileIndex, fileIdField);
   const newFileIds = [...new Set([...fileIds, ...filesIdsMatched])];
 
   return newFileIds;
