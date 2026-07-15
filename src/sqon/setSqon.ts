@@ -8,10 +8,10 @@ const handleContent = (content: any, sets: Set[], getPathToParticipantId) => {
   const firstValue = content?.content?.value ? content.content.value[0] : '';
   const matches = setRegex.exec(firstValue);
   const setId = matches && matches[1] ? matches[1] : null;
-  if (setId) {
-    const set = sets.find((s) => s.id === setId);
+  const set = setId ? sets.find((s) => s.id === setId) : null;
+  if (set) {
     const newContent = { ...content };
-    newContent.content.field = getPathToParticipantId(set.setType);
+    newContent.content.field = getPathToParticipantId(set.setType, set.idField);
     newContent.content.value = set.ids;
     contents.push(newContent);
   } else {

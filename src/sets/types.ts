@@ -41,6 +41,7 @@ export type Set = {
   updated_date: Date;
   setType: string;
   ids: string[];
+  idField?: string; // `file_id` for legacy sets, `stable_file_id` for new file sets)
   sharedpublicly: boolean;
   is_phantom_manifest: boolean;
   is_invisible?: boolean;

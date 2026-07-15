@@ -50,7 +50,7 @@ export const createSet = async (
   const { sqon, sort, type, idField, tag, sharedpublicly, is_phantom_manifest, withFamily, is_invisible } = requestBody;
   const sqonAfterReplace = await resolveSetsInSqon(sqon, userId, accessToken, usersApiURL);
   const ids = await searchSqon(sqonAfterReplace, type, sort, idField, esClient, schema, maxSetContentSize);
-  const idsWithFamily = withFamily ? await getFamilyIds(esClient, ids, maxSetContentSize, esFileIndex) : ids;
+  const idsWithFamily = withFamily ? await getFamilyIds(esClient, ids, maxSetContentSize, esFileIndex, idField) : ids;
   const truncatedIds = truncateIds(idsWithFamily, maxSetContentSize);
 
   const payload = {
@@ -154,6 +154,7 @@ const mapResultToSet = (output: Output): Set => ({
   updated_date: output.updated_date,
   setType: output.content.setType,
   ids: output.content.ids,
+  idField: output.content.idField,
   sharedpublicly: output.sharedpublicly,
   is_phantom_manifest: output.is_phantom_manifest,
   is_invisible: output.is_invisible,
